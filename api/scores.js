@@ -3,7 +3,7 @@
 // headers that the NBA CDN requires. Your frontend calls /api/scores and
 // this function fetches the real data and returns it.
 
-export default async function handler(req, res) {
+module.export default async function handler(req, res) {
   // Allow your frontend to call this endpoint
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET');
