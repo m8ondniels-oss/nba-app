@@ -191,7 +191,7 @@
   <div class="app-header">
     <div>
       <h1><span class="live-dot"></span>NBA Watchability Index</h1>
-      <p>Live scores · playoff stakes · team intelligence · 2025-26</p>
+      <p>Live scores - playoff stakes - team intelligence - 2025-26</p>
       <p id="roster-status"></p>
     </div>
     <div class="header-right">
@@ -200,9 +200,9 @@
     </div>
   </div>
   <div class="nav-tabs">
-    <button class="nav-tab active" onclick="showPage('games',this)">🏀 Live Games</button>
-    <button class="nav-tab" onclick="showPage('teams',this)">📊 Team Performance</button>
-    <button class="nav-tab" onclick="showPage('bracket',this)">🏆 Playoff Outlook</button>
+    <button class="nav-tab active" onclick="showPage('games',this)"> Live Games</button>
+    <button class="nav-tab" onclick="showPage('teams',this)"> Team Performance</button>
+    <button class="nav-tab" onclick="showPage('bracket',this)"> Playoff Outlook</button>
   </div>
   <div id="page-games">
     <div class="sub-tabs">
@@ -232,7 +232,7 @@
   </div>
 </div>
 <script>
-/* ── STANDINGS ── */
+/* -- STANDINGS -- */
 var STANDINGS={
   "Oklahoma City Thunder":{conf:"W",confRank:1,wins:60,losses:16,netRtg:9.8},
   "San Antonio Spurs":{conf:"W",confRank:2,wins:57,losses:18,netRtg:7.2},
@@ -279,7 +279,7 @@ CHA:“Charlotte Hornets”,BKN:“Brooklyn Nets”,WAS:“Washington Wizards”
 IND:“Indiana Pacers”,CHI:“Chicago Bulls”,MIL:“Milwaukee Bucks”,
 };
 
-/* ── DEFAULT STAR DATA (rosters.js overrides this with live data) ── */
+/* – DEFAULT STAR DATA (rosters.js overrides this with live data) – */
 var DEFAULT_STARS={
 ATL:{players:[“Trae Young”,“De’Andre Hunter”],ppg:[25.6,17.2],rating:79},
 BKN:{players:[“Cam Thomas”],ppg:[24.2],rating:68},
@@ -328,13 +328,13 @@ var SEASON_AVGS={
 “Giannis Antetokounmpo”:{pts:27.1},“Tyrese Maxey”:{pts:25.9},
 };
 
-/* ── STATE ── */
+/* – STATE – */
 var liveGames=[],lastFetched=null,isFetching=false;
 var liveRosters=null;
 var charts={},expandedGame=null,currentGameTab=‘live’;
 var expandedTeam=null,currentConf=‘W’,currentPage=‘games’;
 
-/* ── HELPERS ── */
+/* – HELPERS – */
 function barColor(v){return v>=70?’#16a34a’:v>=50?’#2563eb’:v>=35?’#f59e0b’:’#dc2626’;}
 function wsClass(v){return v>=70?‘green’:v>=45?‘yellow’:‘red’;}
 function wsBadgeCls(v){return v>=70?‘pill-green’:v>=45?‘pill-yellow’:‘pill-red’;}
@@ -353,7 +353,7 @@ if(s>=35) return ‘Skip unless your team’;
 return ‘Hard pass’;
 }
 function pregameVerdictTxt(s){
-if(s>=75) return ‘Circle this one — top game tonight’;
+if(s>=75) return ‘Circle this one - top game tonight’;
 if(s>=60) return ‘Should be a good one’;
 if(s>=45) return ‘Watchable if nothing else is on’;
 return ‘Low priority tonight’;
@@ -375,7 +375,7 @@ var secLeft=m?parseInt(m[1])*60+parseInt(m[2]):720;
 return Math.min(((quarter-1)*12+(720-secLeft)/60)/48,1);
 }
 
-/* ── STAKES ── */
+/* – STAKES – */
 function calcStakes(homeAbbr,awayAbbr){
 var h=STANDINGS[ABBR_TO_NAME[homeAbbr]];
 var a=STANDINGS[ABBR_TO_NAME[awayAbbr]];
@@ -396,11 +396,11 @@ return{
 score:score,
 label:score>=70?‘High stakes’:score>=45?‘Playoff implications’:‘Low stakes’,
 cls:score>=70?‘pill-red’:score>=45?‘pill-yellow’:‘pill-gray’,
-reason:reasons.join(’ · ’)||‘Low stakes’,
+reason:reasons.join(’ - ’)||‘Low stakes’,
 };
 }
 
-/* ── PREGAME WATCHABILITY ── */
+/* – PREGAME WATCHABILITY – */
 function getStars(abbr){
 if(liveRosters&&liveRosters[abbr]) return liveRosters[abbr];
 return DEFAULT_STARS[abbr]||{players:[],ppg:[],rating:65,starInjuries:[],otherInjuries:[]};
@@ -433,7 +433,7 @@ aStars:aStars,
 };
 }
 
-/* ── LIVE WATCHABILITY ── */
+/* – LIVE WATCHABILITY – */
 function calcWatchability(game){
 if(game.status===‘scheduled’) return null;
 var gp=getElapsedPct(game.quarter||1,game.clock);
@@ -473,7 +473,7 @@ clutch:{val:Math.round(clutch),wt:‘10%’,label:‘Clutch factor’},
 };
 }
 
-/* ── FETCH ── */
+/* – FETCH – */
 async function fetchRosters(){
 try{
 var res=await fetch(’/api/rosters’);
@@ -534,7 +534,7 @@ document.getElementById(‘upd-text’).textContent=secs<5?‘Updated just now�
 function showBanner(type,msg){var el=document.getElementById(‘status-banner’);el.className=’status-banner ’+type;el.textContent=msg;}
 function hideBanner(){document.getElementById(‘status-banner’).style.display=‘none’;}
 
-/* ── STANDINGS STRIP HTML ── */
+/* – STANDINGS STRIP HTML – */
 function standHtml(homeAbbr,awayAbbr,homeName,awayName){
 return [{abbr:awayAbbr,name:awayName},{abbr:homeAbbr,name:homeName}].map(function(t){
 var s=STANDINGS[t.name]||STANDINGS[ABBR_TO_NAME[t.abbr]];
@@ -544,7 +544,7 @@ return ‘<div class="scard"><div class="scard-name">’+t.abbr+’ <span style=
 }).join(’’);
 }
 
-/* ── FACTOR BARS HTML ── */
+/* – FACTOR BARS HTML – */
 function factorBarsHtml(factors){
 return Object.keys(factors).map(function(k){
 var f=factors[k];
@@ -552,7 +552,7 @@ return ‘<div class="factor"><div class="factor-top"><span class="factor-name">
 }).join(’’);
 }
 
-/* ── RENDER GAMES ── */
+/* – RENDER GAMES – */
 function renderGames(){
 var list;
 if(currentGameTab===‘live’) list=liveGames.filter(function(g){return g.status===‘inprogress’;});
@@ -584,7 +584,7 @@ document.getElementById(‘games-container’).innerHTML=list.map(renderCard).jo
 function renderCard(g){
 var isExp=expandedGame===g.id;
 
-/* ── UPCOMING (pregame) ── */
+/* – UPCOMING (pregame) – */
 if(g.status===‘scheduled’){
 var pw=calcPregame(g.home.abbr,g.away.abbr,g.winProb||null);
 var stakesBadge=pw.stakes.score>=45?’<span class="stakes-pill '+pw.stakes.cls+'">’+pw.stakes.label+’</span>’:’’;
@@ -612,7 +612,7 @@ if(isExp){
     return '<div class="star-row"><span class="star-team">'+p.team+'</span><span class="star-name">'+p.name+'</span><span class="star-avg">'+p.ppg+' ppg</span></div>';
   }).join('');
 
-  /* injury warnings — only show if live roster data has starInjuries */
+  /* injury warnings - only show if live roster data has starInjuries */
   var injHtml='';
   var hInj=(hS&&hS.starInjuries)||[];
   var aInj=(aS&&aS.starInjuries)||[];
@@ -639,7 +639,7 @@ if(isExp){
   }
 
   expandHtml='<div class="expand-body open">'+
-    '<div class="algo-note">Pregame weights: <strong>star power</strong> 30% · <strong>playoff stakes</strong> 28% · matchup quality 22% · win prob. tightness 20%<br>Stakes: '+pw.stakes.reason+' ('+pw.stakes.score+'/100)</div>'+
+    '<div class="algo-note">Pregame weights: <strong>star power</strong> 30% - <strong>playoff stakes</strong> 28% - matchup quality 22% - win prob. tightness 20%<br>Stakes: '+pw.stakes.reason+' ('+pw.stakes.score+'/100)</div>'+
     '<div class="standings-strip">'+standHtml(g.home.abbr,g.away.abbr,g.home.name,g.away.name)+'</div>'+
     '<div class="expand-section">Score factors</div>'+
     '<div class="factors-grid">'+fcHtml+'</div>'+
@@ -661,7 +661,7 @@ return '<div class="card '+(isExp?'expanded':'')+'" onclick="toggleGame(\''+g.id
 
 }
 
-/* ── LIVE / FINAL ── */
+/* – LIVE / FINAL – */
 var ws=calcWatchability(g);
 var gp=getElapsedPct(g.quarter||1,g.clock);
 var stakes=calcStakes(g.home.abbr,g.away.abbr);
@@ -697,7 +697,7 @@ leadersHtml=’<div class="expand-section">Box score</div><div class="loading-bo
 }
 var chartId=‘ch-’+g.id;
 expandHtml=’<div class="expand-body open">’+
-‘<div class="algo-note">Weights: <strong>pace</strong> 26% · <strong>stars</strong> 24% · <strong>playoff stakes</strong> 22% · closeness 18% · clutch 10%<br>Stakes: ‘+ws.stakes.reason+’ (’+ws.stakes.score+’/100)</div>’+
+‘<div class="algo-note">Weights: <strong>pace</strong> 26% - <strong>stars</strong> 24% - <strong>playoff stakes</strong> 22% - closeness 18% - clutch 10%<br>Stakes: ‘+ws.stakes.reason+’ (’+ws.stakes.score+’/100)</div>’+
 ‘<div class="standings-strip">’+standHtml(g.home.abbr,g.away.abbr,g.home.name,g.away.name)+’</div>’+
 periodHtml+
 ‘<div class="expand-section">Score factors</div>’+
@@ -752,7 +752,7 @@ scales:{x:{grid:{display:false},ticks:{font:{size:10},color:tc}},y:{min:0,max:10
 });
 }
 
-/* ── TEAM PERFORMANCE ── */
+/* – TEAM PERFORMANCE – */
 var TEAMS={
 W:[
 {name:“Oklahoma City Thunder”,abbr:“OKC”,wins:60,losses:16,confRank:1,preseasonWins:52,projRank:2,offRtg:118.4,defRtg:108.2,perfScore:91,perfTag:“Exceeding expectations”,
@@ -766,11 +766,11 @@ playoffNote:“The league’s biggest surprise. Wembanyama’s first deep run. Y
 {name:“Los Angeles Lakers”,abbr:“LAL”,wins:49,losses:26,confRank:4,preseasonWins:47,projRank:5,offRtg:115.8,defRtg:111.2,perfScore:68,perfTag:“On track”,
 injuries:[{name:“LeBron James”,status:“Prob.”,dot:“dot-ok”,note:“ankle mgmt”}],
 playoffRounds:[{yr:“22”,label:“Miss”,h:0},{yr:“23”,label:“WCF”,h:75},{yr:“24”,label:“1st Rd”,h:15},{yr:“25”,label:“2nd Rd”,h:40}],
-playoffNote:“LeBron + Luka is a terrifying playoff pairing. Two all-time talents on the same team — this is the most dangerous LAL squad in years.”,seriesProb:62},
+playoffNote:“LeBron + Luka is a terrifying playoff pairing. Two all-time talents on the same team - this is the most dangerous LAL squad in years.”,seriesProb:62},
 {name:“Denver Nuggets”,abbr:“DEN”,wins:48,losses:28,confRank:3,preseasonWins:52,projRank:1,offRtg:117.2,defRtg:112.8,perfScore:55,perfTag:“Slightly underperforming”,
 injuries:[{name:“Nikola Jokic”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Jamal Murray”,status:“GTD”,dot:“dot-gtd”,note:“hamstring”}],
 playoffRounds:[{yr:“22”,label:“2nd Rd”,h:40},{yr:“23”,label:“Champs”,h:100},{yr:“24”,label:“1st Rd”,h:15},{yr:“25”,label:“2nd Rd”,h:40}],
-playoffNote:“Jokic is the best player on Earth. Murray health is everything — Denver is 0-4 in series without him.”,seriesProb:74},
+playoffNote:“Jokic is the best player on Earth. Murray health is everything - Denver is 0-4 in series without him.”,seriesProb:74},
 {name:“Minnesota Timberwolves”,abbr:“MIN”,wins:46,losses:29,confRank:5,preseasonWins:48,projRank:3,offRtg:113.4,defRtg:109.8,perfScore:52,perfTag:“Slightly under”,
 injuries:[{name:“Julius Randle”,status:“GTD”,dot:“dot-gtd”,note:“shoulder”},{name:“Rudy Gobert”,status:“Healthy”,dot:“dot-ok”,note:””}],
 playoffRounds:[{yr:“22”,label:“1st Rd”,h:15},{yr:“23”,label:“2nd Rd”,h:40},{yr:“24”,label:“WCF”,h:75},{yr:“25”,label:“2nd Rd”,h:40}],
@@ -792,7 +792,7 @@ E:[
 {name:“Detroit Pistons”,abbr:“DET”,wins:54,losses:21,confRank:1,preseasonWins:34,projRank:10,offRtg:116.8,defRtg:108.6,perfScore:99,perfTag:“Biggest surprise in the league”,
 injuries:[{name:“Cade Cunningham”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Jalen Duren”,status:“Healthy”,dot:“dot-ok”,note:””}],
 playoffRounds:[{yr:“22”,label:“Lottery”,h:0},{yr:“23”,label:“Lottery”,h:0},{yr:“24”,label:“Lottery”,h:0},{yr:“25”,label:“1st Rd”,h:15}],
-playoffNote:“The league’s biggest story. No deep playoff experience. Cade is legit — can they handle the pressure?”,seriesProb:65},
+playoffNote:“The league’s biggest story. No deep playoff experience. Cade is legit - can they handle the pressure?”,seriesProb:65},
 {name:“Boston Celtics”,abbr:“BOS”,wins:50,losses:25,confRank:3,preseasonWins:54,projRank:1,offRtg:119.2,defRtg:110.4,perfScore:58,perfTag:“Slight underperformance”,
 injuries:[{name:“Jaylen Brown”,status:“GTD”,dot:“dot-gtd”,note:“knee”},{name:“Kristaps Porzingis”,status:“Out”,dot:“dot-out”,note:“calf (season)”}],
 playoffRounds:[{yr:“22”,label:“Finals”,h:95},{yr:“23”,label:“2nd Rd”,h:40},{yr:“24”,label:“Champs”,h:100},{yr:“25”,label:“ECF”,h:75}],
@@ -826,16 +826,16 @@ playoffNote:“Paolo is a budding star. Defense is elite. Franz Wagner health is
 
 var BRACKET={
 W:[
-{seed1:1,t1:“OKC”,seed2:8,t2:“POR”,prob1:82,prob2:18,note:“Shai vs Scoot — generational talent on both sides”},
+{seed1:1,t1:“OKC”,seed2:8,t2:“POR”,prob1:82,prob2:18,note:“Shai vs Scoot - generational talent on both sides”},
 {seed1:2,t1:“SAS”,seed2:7,t2:“LAC”,prob1:71,prob2:29,note:“Wembanyama’s coming-out party”},
-{seed1:3,t1:“DEN”,seed2:6,t2:“HOU”,prob1:62,prob2:38,note:“Jokic vs KD — series of the round”},
-{seed1:4,t1:“LAL”,seed2:5,t2:“MIN”,prob1:55,prob2:45,note:“LeBron vs Edwards — marquee matchup”},
+{seed1:3,t1:“DEN”,seed2:6,t2:“HOU”,prob1:62,prob2:38,note:“Jokic vs KD - series of the round”},
+{seed1:4,t1:“LAL”,seed2:5,t2:“MIN”,prob1:55,prob2:45,note:“LeBron vs Edwards - marquee matchup”},
 ],
 E:[
 {seed1:1,t1:“DET”,seed2:8,t2:“ORL”,prob1:65,prob2:35,note:“Can Detroit handle playoff pressure for the first time?”},
-{seed1:2,t1:“CLE”,seed2:7,t2:“ATL”,prob1:70,prob2:30,note:“Mitchell vs Trae — two elite shot-creators”},
+{seed1:2,t1:“CLE”,seed2:7,t2:“ATL”,prob1:70,prob2:30,note:“Mitchell vs Trae - two elite shot-creators”},
 {seed1:3,t1:“BOS”,seed2:6,t2:“PHI”,prob1:78,prob2:22,note:“Defending champs vs a broken Sixers squad”},
-{seed1:4,t1:“NYK”,seed2:5,t2:“TOR”,prob1:69,prob2:31,note:“Brunson’s time to shine — MSG will be electric”},
+{seed1:4,t1:“NYK”,seed2:5,t2:“TOR”,prob1:69,prob2:31,note:“Brunson’s time to shine - MSG will be electric”},
 ]
 };
 
@@ -874,7 +874,7 @@ return ‘<div class="bseries"><div class="bseries-label">First Round</div><div 
 }).join(’’);
 }
 
-/* ── NAV ── */
+/* – NAV – */
 function showPage(page,el){
 currentPage=page;
 document.querySelectorAll(’.nav-tab’).forEach(function(t){t.classList.remove(‘active’);});
@@ -896,7 +896,7 @@ document.querySelectorAll(’#page-teams .sub-tab’).forEach(function(t){t.clas
 el.classList.add(‘active’);renderTeams();
 }
 
-/* ── AUTO REFRESH ── */
+/* – AUTO REFRESH – */
 var countdown=30;
 setInterval(function(){
 updateTimestamp();countdown–;
