@@ -9,187 +9,181 @@
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg: #ffffff; --bg2: #f5f5f4; --bg3: #fafaf9;
-    --text: #1c1917; --text2: #57534e; --text3: #a8a29e;
-    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
-    --radius: 10px; --radius-sm: 6px;
-    --blue: #3b82f6; --orange: #f97316;
-    --green-bg: #dcfce7; --green-text: #166534;
-    --yellow-bg: #fef3c7; --yellow-text: #92400e;
-    --red-bg: #fee2e2; --red-text: #991b1b;
-    --blue-bg: #dbeafe; --blue-text: #1d4ed8;
+    --bg:#ffffff; --bg2:#f5f5f4; --bg3:#fafaf9;
+    --text:#1c1917; --text2:#57534e; --text3:#a8a29e;
+    --border:rgba(0,0,0,0.10); --border2:rgba(0,0,0,0.18);
+    --radius:10px; --radius-sm:6px;
+    --blue:#3b82f6; --orange:#f97316;
+    --green-bg:#dcfce7; --green-text:#166534;
+    --yellow-bg:#fef3c7; --yellow-text:#92400e;
+    --red-bg:#fee2e2; --red-text:#991b1b;
+    --blue-bg:#dbeafe; --blue-text:#1d4ed8;
   }
   @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #1c1917; --bg2: #292524; --bg3: #1c1917;
-      --text: #fafaf9; --text2: #a8a29e; --text3: #57534e;
-      --border: rgba(255,255,255,0.10); --border2: rgba(255,255,255,0.18);
-      --green-bg: #14532d; --green-text: #86efac;
-      --yellow-bg: #451a03; --yellow-text: #fcd34d;
-      --red-bg: #450a0a; --red-text: #fca5a5;
-      --blue-bg: #1e3a5f; --blue-text: #93c5fd;
+      --bg:#1c1917; --bg2:#292524; --bg3:#1c1917;
+      --text:#fafaf9; --text2:#a8a29e; --text3:#57534e;
+      --border:rgba(255,255,255,0.10); --border2:rgba(255,255,255,0.18);
+      --green-bg:#14532d; --green-text:#86efac;
+      --yellow-bg:#451a03; --yellow-text:#fcd34d;
+      --red-bg:#450a0a; --red-text:#fca5a5;
+      --blue-bg:#1e3a5f; --blue-text:#93c5fd;
     }
   }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--bg3); color: var(--text); min-height: 100vh; }
-  .app { max-width: 780px; margin: 0 auto; padding: 0 16px 60px; }
-  .app-header { padding: 24px 0 16px; border-bottom: 0.5px solid var(--border); margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 8px; }
-  .app-header h1 { font-size: 20px; font-weight: 600; }
-  .app-header p { font-size: 13px; color: var(--text2); margin-top: 2px; }
-  .header-right { text-align: right; }
-  .refresh-btn { font-size: 12px; padding: 4px 10px; background: transparent; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); color: var(--text2); cursor: pointer; margin-top: 4px; display: inline-block; }
-  .refresh-btn:hover { background: var(--bg2); }
-  .refresh-btn:disabled { opacity: 0.5; cursor: default; }
-  #upd-text { font-size: 12px; color: var(--text3); }
-  .live-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #ef4444; margin-right: 5px; animation: blink 1.4s infinite; vertical-align: middle; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg3); color:var(--text); min-height:100vh; }
+  .app { max-width:780px; margin:0 auto; padding:0 16px 60px; }
+  .app-header { padding:24px 0 16px; border-bottom:0.5px solid var(--border); margin-bottom:16px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:8px; }
+  .app-header h1 { font-size:20px; font-weight:600; }
+  .app-header p { font-size:13px; color:var(--text2); margin-top:2px; }
+  #roster-status { font-size:11px; color:var(--text3); margin-top:2px; }
+  .header-right { text-align:right; }
+  #upd-text { font-size:12px; color:var(--text3); }
+  .refresh-btn { font-size:12px; padding:4px 10px; background:transparent; border:0.5px solid var(--border2); border-radius:var(--radius-sm); color:var(--text2); cursor:pointer; margin-top:4px; display:inline-block; }
+  .refresh-btn:hover { background:var(--bg2); }
+  .refresh-btn:disabled { opacity:0.5; cursor:default; }
+  .live-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#ef4444; margin-right:5px; animation:blink 1.4s infinite; vertical-align:middle; }
   @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.2;} }
-  .status-banner { font-size: 13px; padding: 10px 14px; border-radius: var(--radius-sm); margin-bottom: 14px; display: none; }
-  .status-banner.loading { background: var(--blue-bg); color: var(--blue-text); display: block; }
-  .status-banner.error { background: var(--red-bg); color: var(--red-text); display: block; }
-  .status-banner.empty { background: var(--bg2); color: var(--text2); display: block; }
-  .nav-tabs { display: flex; border-bottom: 0.5px solid var(--border); margin-bottom: 16px; }
-  .nav-tab { font-size: 14px; padding: 8px 18px; cursor: pointer; color: var(--text2); border: none; border-bottom: 2px solid transparent; margin-bottom: -0.5px; background: none; }
-  .nav-tab.active { color: var(--text); font-weight: 500; border-bottom-color: var(--text); }
-  .sub-tabs { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
-  .sub-tab { font-size: 12px; padding: 4px 14px; border: 0.5px solid var(--border2); border-radius: 99px; cursor: pointer; color: var(--text2); background: transparent; }
-  .sub-tab.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 14px 18px; cursor: pointer; margin-bottom: 10px; transition: border-color 0.15s; }
-  .card:hover { border-color: var(--border2); }
-  .card.expanded { border-color: var(--border2); }
-  .card-header { display: flex; align-items: center; gap: 8px; }
-  .pill { font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 99px; white-space: nowrap; display: inline-block; }
-  .pill-live { background: var(--red-bg); color: var(--red-text); }
-  .pill-final { background: var(--bg2); color: var(--text3); }
-  .pill-upcoming { background: var(--bg2); color: var(--text3); }
-  .pill-green { background: var(--green-bg); color: var(--green-text); }
-  .pill-blue { background: var(--blue-bg); color: var(--blue-text); }
-  .pill-yellow { background: var(--yellow-bg); color: var(--yellow-text); }
-  .pill-red { background: var(--red-bg); color: var(--red-text); }
-  .pill-gray { background: var(--bg2); color: var(--text3); }
-  .stakes-pill { font-size: 10px; font-weight: 500; padding: 2px 7px; border-radius: 99px; margin-left: 6px; }
-  .matchup { display: flex; align-items: center; gap: 6px; flex: 1; min-width: 0; }
-  .team-blk { display: flex; flex-direction: column; align-items: center; min-width: 50px; }
-  .team-abbr { font-size: 13px; font-weight: 500; }
-  .team-score { font-size: 22px; font-weight: 600; line-height: 1.15; }
-  .team-score.leading { color: var(--text); }
-  .team-score.trailing { color: var(--text2); }
-  .at-sep { font-size: 11px; color: var(--text3); padding: 0 3px; padding-top: 10px; }
-  .ws-block { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; min-width: 88px; }
-  .ws-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
-  .ws-num { font-size: 28px; font-weight: 600; line-height: 1; }
-  .ws-num.green { color: #16a34a; }
-  .ws-num.yellow { color: #d97706; }
-  .ws-num.red { color: #dc2626; }
-  .ws-num.blue { color: #2563eb; }
-  .expand-body { display: none; margin-top: 14px; padding-top: 14px; border-top: 0.5px solid var(--border); }
-  .expand-body.open { display: block; }
-  .algo-note { font-size: 11px; color: var(--text2); padding: 7px 10px; background: var(--bg2); border-radius: var(--radius-sm); margin-bottom: 12px; line-height: 1.6; }
-  .algo-note strong { color: var(--text); font-weight: 500; }
-  .expand-section { font-size: 12px; font-weight: 500; color: var(--text2); margin: 12px 0 7px; }
-  .factors-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
-  .factor { background: var(--bg2); border-radius: var(--radius-sm); padding: 9px 11px; }
-  .factor-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
-  .factor-name { font-size: 11px; color: var(--text2); }
-  .factor-wt { font-size: 10px; color: var(--text3); }
-  .factor-bar-bg { height: 4px; background: var(--border); border-radius: 99px; margin-bottom: 4px; overflow: hidden; }
-  .factor-bar { height: 4px; border-radius: 99px; }
-  .factor-val { font-size: 13px; font-weight: 500; color: var(--text); }
-  .factor-val span { font-size: 10px; color: var(--text3); font-weight: 400; }
-  .standings-strip { display: flex; gap: 8px; margin-bottom: 14px; }
-  .scard { flex: 1; background: var(--bg2); border-radius: var(--radius-sm); padding: 8px 10px; }
-  .scard-name { font-size: 12px; font-weight: 500; }
-  .scard-rec { font-size: 11px; color: var(--text2); margin-top: 1px; }
-  .scard-seed { font-size: 10px; font-weight: 500; padding: 2px 6px; border-radius: 99px; display: inline-block; margin-top: 4px; }
-  .box-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 10px; }
-  .box-team-col { flex: 1; min-width: 0; }
-  .box-team-lbl { font-size: 11px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
-  .stat-headers { display: flex; align-items: center; padding: 0 0 3px; border-bottom: 0.5px solid var(--border); margin-bottom: 2px; }
-  .stat-hdr { font-size: 10px; color: var(--text3); text-align: right; width: 28px; flex-shrink: 0; }
-  .stat-hdr.name { flex: 1; text-align: left; width: auto; }
-  .player-row { display: flex; align-items: center; padding: 4px 0; border-bottom: 0.5px solid var(--border); }
-  .player-row:last-child { border-bottom: none; }
-  .player-name { font-size: 12px; color: var(--text); flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .player-stat { font-size: 11px; color: var(--text2); text-align: right; width: 28px; flex-shrink: 0; }
-  .player-stat.pts { font-weight: 600; color: var(--text); }
-  .period-scores { display: flex; gap: 0; margin-bottom: 14px; border: 0.5px solid var(--border); border-radius: var(--radius-sm); overflow: hidden; }
-  .period-col { flex: 1; text-align: center; border-right: 0.5px solid var(--border); }
-  .period-col:last-child { border-right: none; }
-  .period-hdr { font-size: 10px; color: var(--text3); padding: 4px 0; background: var(--bg2); border-bottom: 0.5px solid var(--border); }
-  .period-score { font-size: 12px; font-weight: 500; padding: 4px 0; }
-  .period-score.away { color: var(--text2); }
-  .period-score.home { color: var(--text); border-top: 0.5px solid var(--border); }
-  .chart-section { margin-bottom: 14px; }
-  .chart-label { font-size: 12px; font-weight: 500; color: var(--text2); margin-bottom: 5px; }
-  .chart-legend { display: flex; gap: 12px; margin-bottom: 6px; }
-  .chart-legend span { font-size: 11px; color: var(--text2); display: flex; align-items: center; gap: 4px; }
-  .legend-line { width: 12px; height: 2px; display: inline-block; }
-  .chart-wrap { position: relative; width: 100%; height: 130px; }
-  .verdict { padding: 10px 13px; border-radius: var(--radius-sm); font-size: 13px; font-weight: 500; margin-top: 10px; }
-  .broadcast { font-size: 10px; color: var(--text3); margin-left: 4px; }
-  .loading-box { font-size: 12px; color: var(--text3); padding: 8px 0; font-style: italic; }
-  /* Pregame preview card */
-  .pregame-factors { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-  .pregame-stars { margin-bottom: 12px; }
-  .star-row { display: flex; align-items: center; gap: 8px; padding: 5px 0; border-bottom: 0.5px solid var(--border); }
-  .star-row:last-child { border-bottom: none; }
-  .star-name { font-size: 12px; color: var(--text); flex: 1; }
-  .star-avg { font-size: 11px; color: var(--text2); }
-  .star-team { font-size: 11px; color: var(--text3); width: 30px; }
-  .win-prob-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .win-prob-team { font-size: 12px; font-weight: 500; width: 36px; }
-  .win-prob-bar-bg { flex: 1; height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .win-prob-bar { height: 8px; border-radius: 99px; }
-  .win-prob-pct { font-size: 12px; font-weight: 500; width: 36px; text-align: right; }
-  /* Team Performance */
-  .legend-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
-  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text2); }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .tcard-header { display: flex; align-items: center; gap: 10px; }
-  .team-rank-num { font-size: 13px; font-weight: 500; color: var(--text3); width: 20px; flex-shrink: 0; }
-  .team-info { flex: 1; min-width: 0; }
-  .team-title { font-size: 14px; font-weight: 500; display: flex; align-items: center; flex-wrap: wrap; gap: 4px; }
-  .team-subtitle { font-size: 11px; color: var(--text2); margin-top: 2px; }
-  .perf-block { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; min-width: 70px; }
-  .perf-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; }
-  .perf-num { font-size: 24px; font-weight: 600; line-height: 1; }
-  .metrics-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 8px; margin-bottom: 12px; }
-  .met { background: var(--bg2); border-radius: var(--radius-sm); padding: 8px 10px; }
-  .met-l { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
-  .met-v { font-size: 15px; font-weight: 600; }
-  .met-s { font-size: 11px; margin-top: 1px; }
-  .bar-list { margin-bottom: 12px; }
-  .bar-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
-  .bar-row-name { font-size: 12px; color: var(--text2); width: 140px; flex-shrink: 0; }
-  .bar-bg { flex: 1; height: 6px; background: var(--border); border-radius: 99px; overflow: hidden; }
-  .bar-fill { height: 6px; border-radius: 99px; }
-  .bar-val { font-size: 11px; font-weight: 500; width: 130px; text-align: right; }
-  .hist-bars { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; }
-  .hist-yr { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-  .hist-bar-bg { width: 22px; height: 56px; background: var(--bg2); border-radius: 4px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
-  .hist-bar-fill { width: 100%; }
-  .hist-yr-lbl { font-size: 9px; color: var(--text3); }
-  .hist-result { font-size: 9px; font-weight: 500; color: var(--text2); max-width: 42px; text-align: center; line-height: 1.2; }
-  .playoff-note { font-size: 12px; color: var(--text2); padding: 8px 10px; background: var(--bg2); border-radius: var(--radius-sm); margin-bottom: 10px; line-height: 1.5; }
-  .inj-list { display: flex; flex-direction: column; gap: 5px; }
-  .inj-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-  .inj-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .dot-out { background: #dc2626; } .dot-gtd { background: #f59e0b; } .dot-ok { background: #16a34a; }
-  .inj-name { font-weight: 500; } .inj-note { color: var(--text2); }
-  /* Bracket */
-  .bracket-intro { font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.5; }
-  .conf-label { font-size: 13px; font-weight: 500; margin: 18px 0 10px; padding-bottom: 6px; border-bottom: 0.5px solid var(--border); }
-  .conf-label:first-child { margin-top: 0; }
-  .series-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  @media(max-width: 520px) { .series-grid { grid-template-columns: 1fr; } }
-  .bseries { background: var(--bg2); border-radius: var(--radius-sm); padding: 9px 11px; border: 0.5px solid var(--border); }
-  .bteam { display: flex; justify-content: space-between; align-items: center; padding: 3px 0; }
-  .bteam + .bteam { border-top: 0.5px solid var(--border); }
-  .bteam-left { display: flex; align-items: center; gap: 5px; }
-  .bteam-seed-n { font-size: 11px; color: var(--text3); }
-  .bteam-name { font-size: 12px; font-weight: 500; }
-  .bteam-name.fav { color: var(--text); } .bteam-name.dog { color: var(--text2); }
-  .bteam-prob { font-size: 12px; font-weight: 600; }
-  .bseries-note { font-size: 10px; color: var(--text3); margin-top: 5px; font-style: italic; }
-  .bseries-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+  .status-banner { font-size:13px; padding:10px 14px; border-radius:var(--radius-sm); margin-bottom:14px; display:none; }
+  .status-banner.loading { background:var(--blue-bg); color:var(--blue-text); display:block; }
+  .status-banner.error { background:var(--red-bg); color:var(--red-text); display:block; }
+  .status-banner.empty { background:var(--bg2); color:var(--text2); display:block; }
+  .nav-tabs { display:flex; border-bottom:0.5px solid var(--border); margin-bottom:16px; }
+  .nav-tab { font-size:14px; padding:8px 18px; cursor:pointer; color:var(--text2); border:none; border-bottom:2px solid transparent; margin-bottom:-0.5px; background:none; }
+  .nav-tab.active { color:var(--text); font-weight:500; border-bottom-color:var(--text); }
+  .sub-tabs { display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap; }
+  .sub-tab { font-size:12px; padding:4px 14px; border:0.5px solid var(--border2); border-radius:99px; cursor:pointer; color:var(--text2); background:transparent; }
+  .sub-tab.active { background:var(--text); color:var(--bg); border-color:var(--text); }
+  .card { background:var(--bg); border:0.5px solid var(--border); border-radius:var(--radius); padding:14px 18px; cursor:pointer; margin-bottom:10px; transition:border-color 0.15s; }
+  .card:hover { border-color:var(--border2); }
+  .card.expanded { border-color:var(--border2); }
+  .card-header { display:flex; align-items:center; gap:8px; }
+  .pill { font-size:11px; font-weight:500; padding:2px 9px; border-radius:99px; white-space:nowrap; display:inline-block; }
+  .pill-live { background:var(--red-bg); color:var(--red-text); }
+  .pill-final { background:var(--bg2); color:var(--text3); }
+  .pill-upcoming { background:var(--bg2); color:var(--text3); }
+  .pill-green { background:var(--green-bg); color:var(--green-text); }
+  .pill-blue { background:var(--blue-bg); color:var(--blue-text); }
+  .pill-yellow { background:var(--yellow-bg); color:var(--yellow-text); }
+  .pill-red { background:var(--red-bg); color:var(--red-text); }
+  .pill-gray { background:var(--bg2); color:var(--text3); }
+  .stakes-pill { font-size:10px; font-weight:500; padding:2px 7px; border-radius:99px; margin-left:6px; }
+  .matchup { display:flex; align-items:center; gap:6px; flex:1; min-width:0; }
+  .team-blk { display:flex; flex-direction:column; align-items:center; min-width:50px; }
+  .team-abbr { font-size:13px; font-weight:500; }
+  .team-score { font-size:22px; font-weight:600; line-height:1.15; }
+  .team-score.leading { color:var(--text); }
+  .team-score.trailing { color:var(--text2); }
+  .at-sep { font-size:11px; color:var(--text3); padding:0 3px; padding-top:10px; }
+  .ws-block { display:flex; flex-direction:column; align-items:flex-end; gap:2px; min-width:88px; }
+  .ws-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; }
+  .ws-num { font-size:28px; font-weight:600; line-height:1; }
+  .ws-num.green { color:#16a34a; } .ws-num.yellow { color:#d97706; } .ws-num.red { color:#dc2626; }
+  .expand-body { display:none; margin-top:14px; padding-top:14px; border-top:0.5px solid var(--border); }
+  .expand-body.open { display:block; }
+  .algo-note { font-size:11px; color:var(--text2); padding:7px 10px; background:var(--bg2); border-radius:var(--radius-sm); margin-bottom:12px; line-height:1.6; }
+  .algo-note strong { color:var(--text); font-weight:500; }
+  .expand-section { font-size:12px; font-weight:500; color:var(--text2); margin:12px 0 7px; }
+  .factors-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:14px; }
+  .factor { background:var(--bg2); border-radius:var(--radius-sm); padding:9px 11px; }
+  .factor-top { display:flex; justify-content:space-between; margin-bottom:4px; }
+  .factor-name { font-size:11px; color:var(--text2); }
+  .factor-wt { font-size:10px; color:var(--text3); }
+  .factor-bar-bg { height:4px; background:var(--border); border-radius:99px; margin-bottom:4px; overflow:hidden; }
+  .factor-bar { height:4px; border-radius:99px; }
+  .factor-val { font-size:13px; font-weight:500; color:var(--text); }
+  .factor-val span { font-size:10px; color:var(--text3); font-weight:400; }
+  .standings-strip { display:flex; gap:8px; margin-bottom:14px; }
+  .scard { flex:1; background:var(--bg2); border-radius:var(--radius-sm); padding:8px 10px; }
+  .scard-name { font-size:12px; font-weight:500; }
+  .scard-rec { font-size:11px; color:var(--text2); margin-top:1px; }
+  .scard-seed { font-size:10px; font-weight:500; padding:2px 6px; border-radius:99px; display:inline-block; margin-top:4px; }
+  .box-row { display:flex; gap:12px; align-items:flex-start; margin-bottom:10px; }
+  .box-team-col { flex:1; min-width:0; }
+  .box-team-lbl { font-size:11px; font-weight:500; color:var(--text2); margin-bottom:5px; }
+  .stat-headers { display:flex; align-items:center; padding:0 0 3px; border-bottom:0.5px solid var(--border); margin-bottom:2px; }
+  .stat-hdr { font-size:10px; color:var(--text3); text-align:right; width:28px; flex-shrink:0; }
+  .stat-hdr.name { flex:1; text-align:left; width:auto; }
+  .player-row { display:flex; align-items:center; padding:4px 0; border-bottom:0.5px solid var(--border); }
+  .player-row:last-child { border-bottom:none; }
+  .player-name { font-size:12px; color:var(--text); flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .player-stat { font-size:11px; color:var(--text2); text-align:right; width:28px; flex-shrink:0; }
+  .player-stat.pts { font-weight:600; color:var(--text); }
+  .period-scores { display:flex; gap:0; margin-bottom:14px; border:0.5px solid var(--border); border-radius:var(--radius-sm); overflow:hidden; }
+  .period-col { flex:1; text-align:center; border-right:0.5px solid var(--border); }
+  .period-col:last-child { border-right:none; }
+  .period-hdr { font-size:10px; color:var(--text3); padding:4px 0; background:var(--bg2); border-bottom:0.5px solid var(--border); }
+  .period-score { font-size:12px; font-weight:500; padding:4px 0; }
+  .period-score.away { color:var(--text2); }
+  .period-score.home { color:var(--text); border-top:0.5px solid var(--border); }
+  .chart-section { margin-bottom:14px; }
+  .chart-label { font-size:12px; font-weight:500; color:var(--text2); margin-bottom:5px; }
+  .chart-legend { display:flex; gap:12px; margin-bottom:6px; }
+  .chart-legend span { font-size:11px; color:var(--text2); display:flex; align-items:center; gap:4px; }
+  .legend-line { width:12px; height:2px; display:inline-block; }
+  .chart-wrap { position:relative; width:100%; height:130px; }
+  .verdict { padding:10px 13px; border-radius:var(--radius-sm); font-size:13px; font-weight:500; margin-top:10px; }
+  .broadcast { font-size:10px; color:var(--text3); margin-left:4px; }
+  .loading-box { font-size:12px; color:var(--text3); padding:8px 0; font-style:italic; }
+  .star-row { display:flex; align-items:center; gap:8px; padding:5px 0; border-bottom:0.5px solid var(--border); }
+  .star-row:last-child { border-bottom:none; }
+  .star-name { font-size:12px; color:var(--text); flex:1; }
+  .star-avg { font-size:11px; color:var(--text2); }
+  .star-team { font-size:11px; color:var(--text3); width:30px; }
+  .win-prob-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .win-prob-team { font-size:12px; font-weight:500; width:36px; }
+  .win-prob-bar-bg { flex:1; height:8px; background:var(--border); border-radius:99px; overflow:hidden; }
+  .win-prob-bar { height:8px; border-radius:99px; }
+  .win-prob-pct { font-size:12px; font-weight:500; width:36px; text-align:right; }
+  .inj-warning { font-size:11px; padding:6px 10px; background:var(--yellow-bg); color:var(--yellow-text); border-radius:var(--radius-sm); margin-bottom:8px; }
+  .legend-row { display:flex; gap:14px; margin-bottom:14px; flex-wrap:wrap; }
+  .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--text2); }
+  .legend-dot { width:8px; height:8px; border-radius:50%; }
+  .tcard-header { display:flex; align-items:center; gap:10px; }
+  .team-rank-num { font-size:13px; font-weight:500; color:var(--text3); width:20px; flex-shrink:0; }
+  .team-info { flex:1; min-width:0; }
+  .team-title { font-size:14px; font-weight:500; display:flex; align-items:center; flex-wrap:wrap; gap:4px; }
+  .team-subtitle { font-size:11px; color:var(--text2); margin-top:2px; }
+  .perf-block { display:flex; flex-direction:column; align-items:flex-end; gap:2px; min-width:70px; }
+  .perf-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; }
+  .perf-num { font-size:24px; font-weight:600; line-height:1; }
+  .metrics-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:12px; }
+  .met { background:var(--bg2); border-radius:var(--radius-sm); padding:8px 10px; }
+  .met-l { font-size:11px; color:var(--text2); margin-bottom:2px; }
+  .met-v { font-size:15px; font-weight:600; }
+  .met-s { font-size:11px; margin-top:1px; }
+  .bar-list { margin-bottom:12px; }
+  .bar-row { display:flex; align-items:center; gap:8px; margin-bottom:7px; }
+  .bar-row-name { font-size:12px; color:var(--text2); width:140px; flex-shrink:0; }
+  .bar-bg { flex:1; height:6px; background:var(--border); border-radius:99px; overflow:hidden; }
+  .bar-fill { height:6px; border-radius:99px; }
+  .bar-val { font-size:11px; font-weight:500; width:130px; text-align:right; }
+  .hist-bars { display:flex; gap:6px; margin-bottom:10px; flex-wrap:wrap; }
+  .hist-yr { display:flex; flex-direction:column; align-items:center; gap:2px; }
+  .hist-bar-bg { width:22px; height:56px; background:var(--bg2); border-radius:4px; display:flex; flex-direction:column; justify-content:flex-end; overflow:hidden; }
+  .hist-bar-fill { width:100%; }
+  .hist-yr-lbl { font-size:9px; color:var(--text3); }
+  .hist-result { font-size:9px; font-weight:500; color:var(--text2); max-width:42px; text-align:center; line-height:1.2; }
+  .playoff-note { font-size:12px; color:var(--text2); padding:8px 10px; background:var(--bg2); border-radius:var(--radius-sm); margin-bottom:10px; line-height:1.5; }
+  .inj-list { display:flex; flex-direction:column; gap:5px; }
+  .inj-item { display:flex; align-items:center; gap:8px; font-size:12px; }
+  .inj-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+  .dot-out { background:#dc2626; } .dot-gtd { background:#f59e0b; } .dot-ok { background:#16a34a; }
+  .inj-name { font-weight:500; } .inj-note { color:var(--text2); }
+  .bracket-intro { font-size:13px; color:var(--text2); margin-bottom:14px; line-height:1.5; }
+  .conf-label { font-size:13px; font-weight:500; margin:18px 0 10px; padding-bottom:6px; border-bottom:0.5px solid var(--border); }
+  .conf-label:first-child { margin-top:0; }
+  .series-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media(max-width:520px) { .series-grid { grid-template-columns:1fr; } }
+  .bseries { background:var(--bg2); border-radius:var(--radius-sm); padding:9px 11px; border:0.5px solid var(--border); }
+  .bteam { display:flex; justify-content:space-between; align-items:center; padding:3px 0; }
+  .bteam + .bteam { border-top:0.5px solid var(--border); }
+  .bteam-left { display:flex; align-items:center; gap:5px; }
+  .bteam-seed-n { font-size:11px; color:var(--text3); }
+  .bteam-name { font-size:12px; font-weight:500; }
+  .bteam-name.fav { color:var(--text); } .bteam-name.dog { color:var(--text2); }
+  .bteam-prob { font-size:12px; font-weight:600; }
+  .bseries-note { font-size:10px; color:var(--text3); margin-top:5px; font-style:italic; }
+  .bseries-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px; }
 </style>
 </head>
 <body>
@@ -197,12 +191,12 @@
   <div class="app-header">
     <div>
       <h1><span class="live-dot"></span>NBA Watchability Index</h1>
-      <p>Live scores · playoff stakes · team intelligence · 2025–26</p>
-      <p id="roster-status" style="font-size:11px;color:var(--text3);margin-top:2px;"></p>
+      <p>Live scores · playoff stakes · team intelligence · 2025-26</p>
+      <p id="roster-status"></p>
     </div>
     <div class="header-right">
-      <div id="upd-text">Loading live data...</div>
-      <button class="refresh-btn" id="refresh-btn" onclick="fetchAndRender()">↻ Refresh</button>
+      <div id="upd-text">Loading...</div>
+      <button class="refresh-btn" id="refresh-btn" onclick="fetchAndRender()">Refresh</button>
     </div>
   </div>
   <div class="nav-tabs">
@@ -216,7 +210,7 @@
       <button class="sub-tab" id="tab-upcoming" onclick="showGameTab('upcoming',this)">Upcoming</button>
       <button class="sub-tab" id="tab-final" onclick="showGameTab('final',this)">Final</button>
     </div>
-    <div id="status-banner" class="status-banner loading">⏳ Fetching live scores...</div>
+    <div id="status-banner" class="status-banner loading">Fetching live scores...</div>
     <div id="games-container"></div>
   </div>
   <div id="page-teams" style="display:none;">
@@ -233,718 +227,680 @@
     <div id="teams-container"></div>
   </div>
   <div id="page-bracket" style="display:none;">
-    <p class="bracket-intro">Projected first-round matchups based on current standings. Series win probabilities reflect net rating, recent form, health, and historical playoff performance.</p>
+    <p class="bracket-intro">Projected first-round matchups based on current standings. Win probabilities reflect net rating, health, and playoff history.</p>
     <div id="bracket-container"></div>
   </div>
 </div>
-
 <script>
-/* ══════════════════════════════════════════
-   STANDINGS
-══════════════════════════════════════════ */
-var STANDINGS = {
-  "Oklahoma City Thunder":  {conf:"W",confRank:1, wins:60,losses:16,netRtg:9.8},
-  "San Antonio Spurs":      {conf:"W",confRank:2, wins:57,losses:18,netRtg:7.2},
-  "Denver Nuggets":         {conf:"W",confRank:3, wins:48,losses:28,netRtg:5.1},
-  "Los Angeles Lakers":     {conf:"W",confRank:4, wins:49,losses:26,netRtg:4.2},
-  "Minnesota Timberwolves": {conf:"W",confRank:5, wins:46,losses:29,netRtg:3.6},
-  "Houston Rockets":        {conf:"W",confRank:6, wins:45,losses:29,netRtg:3.1},
-  "LA Clippers":            {conf:"W",confRank:7, wins:39,losses:36,netRtg:-0.4},
-  "Portland Trail Blazers": {conf:"W",confRank:8, wins:38,losses:38,netRtg:-2.1},
-  "Phoenix Suns":           {conf:"W",confRank:9, wins:42,losses:33,netRtg:1.2},
-  "Golden State Warriors":  {conf:"W",confRank:10,wins:36,losses:39,netRtg:-1.8},
-  "Dallas Mavericks":       {conf:"W",confRank:14,wins:24,losses:51,netRtg:-7.2},
-  "Milwaukee Bucks":        {conf:"W",confRank:12,wins:29,losses:45,netRtg:-4.1},
-  "Memphis Grizzlies":      {conf:"W",confRank:11,wins:25,losses:50,netRtg:-6.8},
-  "Utah Jazz":              {conf:"W",confRank:13,wins:21,losses:55,netRtg:-8.4},
-  "New Orleans Pelicans":   {conf:"W",confRank:15,wins:25,losses:51,netRtg:-7.1},
-  "Sacramento Kings":       {conf:"W",confRank:16,wins:19,losses:57,netRtg:-9.2},
-  "Detroit Pistons":        {conf:"E",confRank:1, wins:54,losses:21,netRtg:8.1},
-  "Cleveland Cavaliers":    {conf:"E",confRank:2, wins:47,losses:28,netRtg:5.2},
-  "Boston Celtics":         {conf:"E",confRank:3, wins:50,losses:25,netRtg:8.8},
-  "New York Knicks":        {conf:"E",confRank:4, wins:48,losses:27,netRtg:3.8},
-  "Toronto Raptors":        {conf:"E",confRank:5, wins:42,losses:32,netRtg:0.2},
-  "Philadelphia 76ers":     {conf:"E",confRank:6, wins:41,losses:34,netRtg:0.2},
-  "Atlanta Hawks":          {conf:"E",confRank:7, wins:43,losses:33,netRtg:0.4},
-  "Orlando Magic":          {conf:"E",confRank:8, wins:39,losses:35,netRtg:-0.6},
-  "Miami Heat":             {conf:"E",confRank:9, wins:40,losses:36,netRtg:0.1},
-  "Charlotte Hornets":      {conf:"E",confRank:10,wins:39,losses:36,netRtg:-0.3},
-  "Brooklyn Nets":          {conf:"E",confRank:15,wins:18,losses:57,netRtg:-9.8},
-  "Washington Wizards":     {conf:"E",confRank:14,wins:17,losses:58,netRtg:-10.2},
-  "Indiana Pacers":         {conf:"E",confRank:13,wins:17,losses:58,netRtg:-9.1},
-  "Chicago Bulls":          {conf:"E",confRank:11,wins:29,losses:46,netRtg:-4.4},
+/* ── STANDINGS ── */
+var STANDINGS={
+  "Oklahoma City Thunder":{conf:"W",confRank:1,wins:60,losses:16,netRtg:9.8},
+  "San Antonio Spurs":{conf:"W",confRank:2,wins:57,losses:18,netRtg:7.2},
+  "Denver Nuggets":{conf:"W",confRank:3,wins:48,losses:28,netRtg:5.1},
+  "Los Angeles Lakers":{conf:"W",confRank:4,wins:49,losses:26,netRtg:4.2},
+  "Minnesota Timberwolves":{conf:"W",confRank:5,wins:46,losses:29,netRtg:3.6},
+  "Houston Rockets":{conf:"W",confRank:6,wins:45,losses:29,netRtg:3.1},
+  "LA Clippers":{conf:"W",confRank:7,wins:39,losses:36,netRtg:-0.4},
+  "Portland Trail Blazers":{conf:"W",confRank:8,wins:38,losses:38,netRtg:-2.1},
+  "Phoenix Suns":{conf:"W",confRank:9,wins:42,losses:33,netRtg:1.2},
+  "Golden State Warriors":{conf:"W",confRank:10,wins:36,losses:39,netRtg:-1.8},
+  "Dallas Mavericks":{conf:"W",confRank:14,wins:24,losses:51,netRtg:-7.2},
+  "Milwaukee Bucks":{conf:"W",confRank:12,wins:29,losses:45,netRtg:-4.1},
+  "Memphis Grizzlies":{conf:"W",confRank:11,wins:25,losses:50,netRtg:-6.8},
+  "Utah Jazz":{conf:"W",confRank:13,wins:21,losses:55,netRtg:-8.4},
+  "New Orleans Pelicans":{conf:"W",confRank:15,wins:25,losses:51,netRtg:-7.1},
+  "Sacramento Kings":{conf:"W",confRank:16,wins:19,losses:57,netRtg:-9.2},
+  "Detroit Pistons":{conf:"E",confRank:1,wins:54,losses:21,netRtg:8.1},
+  "Cleveland Cavaliers":{conf:"E",confRank:2,wins:47,losses:28,netRtg:5.2},
+  "Boston Celtics":{conf:"E",confRank:3,wins:50,losses:25,netRtg:8.8},
+  "New York Knicks":{conf:"E",confRank:4,wins:48,losses:27,netRtg:3.8},
+  "Toronto Raptors":{conf:"E",confRank:5,wins:42,losses:32,netRtg:0.2},
+  "Philadelphia 76ers":{conf:"E",confRank:6,wins:41,losses:34,netRtg:0.2},
+  "Atlanta Hawks":{conf:"E",confRank:7,wins:43,losses:33,netRtg:0.4},
+  "Orlando Magic":{conf:"E",confRank:8,wins:39,losses:35,netRtg:-0.6},
+  "Miami Heat":{conf:"E",confRank:9,wins:40,losses:36,netRtg:0.1},
+  "Charlotte Hornets":{conf:"E",confRank:10,wins:39,losses:36,netRtg:-0.3},
+  "Brooklyn Nets":{conf:"E",confRank:15,wins:18,losses:57,netRtg:-9.8},
+  "Washington Wizards":{conf:"E",confRank:14,wins:17,losses:58,netRtg:-10.2},
+  "Indiana Pacers":{conf:"E",confRank:13,wins:17,losses:58,netRtg:-9.1},
+  "Chicago Bulls":{conf:"E",confRank:11,wins:29,losses:46,netRtg:-4.4},
 };
 
-var ABBR_TO_NAME = {
-  OKC:"Oklahoma City Thunder",SAS:"San Antonio Spurs",DEN:"Denver Nuggets",
-  LAL:"Los Angeles Lakers",MIN:"Minnesota Timberwolves",HOU:"Houston Rockets",
-  LAC:"LA Clippers",POR:"Portland Trail Blazers",PHX:"Phoenix Suns",
-  GSW:"Golden State Warriors",DAL:"Dallas Mavericks",MEM:"Memphis Grizzlies",
-  UTA:"Utah Jazz",NOP:"New Orleans Pelicans",SAC:"Sacramento Kings",
-  DET:"Detroit Pistons",CLE:"Cleveland Cavaliers",BOS:"Boston Celtics",
-  NYK:"New York Knicks",TOR:"Toronto Raptors",PHI:"Philadelphia 76ers",
-  ATL:"Atlanta Hawks",ORL:"Orlando Magic",MIA:"Miami Heat",
-  CHA:"Charlotte Hornets",BKN:"Brooklyn Nets",WAS:"Washington Wizards",
-  IND:"Indiana Pacers",CHI:"Chicago Bulls",MIL:"Milwaukee Bucks",
+var ABBR_TO_NAME={
+OKC:“Oklahoma City Thunder”,SAS:“San Antonio Spurs”,DEN:“Denver Nuggets”,
+LAL:“Los Angeles Lakers”,MIN:“Minnesota Timberwolves”,HOU:“Houston Rockets”,
+LAC:“LA Clippers”,POR:“Portland Trail Blazers”,PHX:“Phoenix Suns”,
+GSW:“Golden State Warriors”,DAL:“Dallas Mavericks”,MEM:“Memphis Grizzlies”,
+UTA:“Utah Jazz”,NOP:“New Orleans Pelicans”,SAC:“Sacramento Kings”,
+DET:“Detroit Pistons”,CLE:“Cleveland Cavaliers”,BOS:“Boston Celtics”,
+NYK:“New York Knicks”,TOR:“Toronto Raptors”,PHI:“Philadelphia 76ers”,
+ATL:“Atlanta Hawks”,ORL:“Orlando Magic”,MIA:“Miami Heat”,
+CHA:“Charlotte Hornets”,BKN:“Brooklyn Nets”,WAS:“Washington Wizards”,
+IND:“Indiana Pacers”,CHI:“Chicago Bulls”,MIL:“Milwaukee Bucks”,
 };
 
-/* Star power ratings per team — top player's ppg + supporting cast bonus */
-var TEAM_STARS = {
-  OKC:{players:["Shai Gilgeous-Alexander"],ppg:[32.1],rating:95},
-  SAS:{players:["Victor Wembanyama"],ppg:[25.4],rating:88},
-  LAL:{players:["LeBron James","Anthony Davis"],ppg:[23.8,26.1],rating:87},
-  DEN:{players:["Nikola Jokic","Jamal Murray"],ppg:[29.3,21.5],rating:92},
-  MIN:{players:["Anthony Edwards"],ppg:[27.8],rating:84},
-  HOU:{players:["Kevin Durant","Alperen Sengun"],ppg:[27.3,21.1],rating:86},
-  LAC:{players:["Kawhi Leonard","James Harden"],ppg:[22.0,16.8],rating:72},
-  POR:{players:["Anfernee Simons","Scoot Henderson"],ppg:[22.4,16.2],rating:71},
-  PHX:{players:["Devin Booker"],ppg:[25.8],rating:80},
-  GSW:{players:["Stephen Curry"],ppg:[26.4],rating:83},
-  DAL:{players:["Cooper Flagg","Luka Doncic"],ppg:[18.7,28.1],rating:82},
-  MEM:{players:["Jaren Jackson Jr."],ppg:[22.1],rating:72},
-  UTA:{players:["Lauri Markkanen"],ppg:[23.4],rating:70},
-  NOP:{players:["Zion Williamson"],ppg:[22.9],rating:73},
-  SAC:{players:["De'Aaron Fox"],ppg:[26.0],rating:74},
-  DET:{players:["Cade Cunningham"],ppg:[26.9],rating:85},
-  CLE:{players:["Donovan Mitchell","Evan Mobley"],ppg:[25.5,19.4],rating:84},
-  BOS:{players:["Jayson Tatum","Jaylen Brown"],ppg:[27.0,22.1],rating:91},
-  NYK:{players:["Jalen Brunson","Karl-Anthony Towns"],ppg:[26.0,24.9],rating:88},
-  TOR:{players:["Scottie Barnes"],ppg:[21.8],rating:76},
-  PHI:{players:["Joel Embiid","Paul George"],ppg:[34.7,18.5],rating:78},
-  ATL:{players:["Trae Young"],ppg:[25.6],rating:79},
-  ORL:{players:["Paolo Banchero","Franz Wagner"],ppg:[22.6,19.1],rating:80},
-  MIA:{players:["Jimmy Butler","Bam Adebayo"],ppg:[20.8,19.3],rating:79},
-  CHA:{players:["LaMelo Ball","Brandon Miller"],ppg:[24.1,17.9],rating:77},
-  BKN:{players:["Cam Thomas"],ppg:[24.2],rating:68},
-  WAS:{players:["Jordan Poole"],ppg:[17.8],rating:58},
-  IND:{players:["Tyrese Haliburton"],ppg:[20.1],rating:69},
-  CHI:{players:["Zach LaVine"],ppg:[24.8],rating:72},
-  MIL:{players:["Damian Lillard"],ppg:[24.3],rating:76},
+/* ── DEFAULT STAR DATA (rosters.js overrides this with live data) ── */
+var DEFAULT_STARS={
+ATL:{players:[“Trae Young”,“De’Andre Hunter”],ppg:[25.6,17.2],rating:79},
+BKN:{players:[“Cam Thomas”],ppg:[24.2],rating:68},
+BOS:{players:[“Jayson Tatum”,“Jaylen Brown”],ppg:[27.0,22.1],rating:91},
+CHA:{players:[“LaMelo Ball”,“Brandon Miller”],ppg:[24.1,17.9],rating:77},
+CHI:{players:[“Zach LaVine”],ppg:[24.8],rating:72},
+CLE:{players:[“Donovan Mitchell”,“Evan Mobley”],ppg:[25.5,19.4],rating:84},
+DAL:{players:[“Luka Doncic”,“Anthony Davis”],ppg:[28.1,26.1],rating:90},
+DEN:{players:[“Nikola Jokic”,“Jamal Murray”],ppg:[29.3,21.5],rating:92},
+DET:{players:[“Cade Cunningham”],ppg:[26.9],rating:85},
+GSW:{players:[“Stephen Curry”],ppg:[26.4],rating:83},
+HOU:{players:[“Kevin Durant”,“Alperen Sengun”],ppg:[27.3,21.1],rating:86},
+IND:{players:[“Tyrese Haliburton”],ppg:[20.1],rating:69},
+LAC:{players:[“James Harden”,“Kawhi Leonard”],ppg:[16.8,22.0],rating:72},
+LAL:{players:[“LeBron James”,“Austin Reaves”],ppg:[23.8,18.4],rating:78},
+MEM:{players:[“Jaren Jackson Jr.”],ppg:[22.1],rating:72},
+MIA:{players:[“Bam Adebayo”,“Tyler Herro”],ppg:[19.3,22.4],rating:77},
+MIL:{players:[“Damian Lillard”,“Giannis Antetokounmpo”],ppg:[24.3,27.1],rating:82},
+MIN:{players:[“Anthony Edwards”,“Julius Randle”],ppg:[27.8,20.1],rating:84},
+NOP:{players:[“Zion Williamson”,“Brandon Ingram”],ppg:[22.9,21.4],rating:73},
+NYK:{players:[“Jalen Brunson”,“Karl-Anthony Towns”],ppg:[26.0,24.9],rating:88},
+OKC:{players:[“Shai Gilgeous-Alexander”],ppg:[32.1],rating:95},
+ORL:{players:[“Paolo Banchero”,“Franz Wagner”],ppg:[22.6,19.1],rating:80},
+PHI:{players:[“Paul George”,“Tyrese Maxey”],ppg:[18.5,25.9],rating:78},
+PHX:{players:[“Devin Booker”,“Kevin Durant”],ppg:[25.8,27.3],rating:84},
+POR:{players:[“Anfernee Simons”,“Scoot Henderson”],ppg:[22.4,16.2],rating:71},
+SAC:{players:[“De’Aaron Fox”,“Domantas Sabonis”],ppg:[26.0,19.9],rating:76},
+SAS:{players:[“Victor Wembanyama”,“Stephon Castle”],ppg:[25.4,14.2],rating:88},
+TOR:{players:[“Scottie Barnes”,“RJ Barrett”],ppg:[21.8,21.2],rating:76},
+UTA:{players:[“Lauri Markkanen”,“Collin Sexton”],ppg:[23.4,18.6],rating:70},
+WAS:{players:[“Jordan Poole”,“Kyle Kuzma”],ppg:[17.8,15.2],rating:58},
 };
 
-/* ══════════════════════════════════════════
-   PREGAME WATCHABILITY ALGORITHM
-   Factors: star power (30%), playoff stakes (28%),
-   matchup quality (22%), win probability tightness (20%)
-══════════════════════════════════════════ */
-function calcPregameWatchability(homeAbbr, awayAbbr, winProb) {
-  // Use live roster data if available, fall back to hardcoded TEAM_STARS
-  var rosterData = liveRosters || TEAM_STARS;
-  var hStars = rosterData[homeAbbr] || TEAM_STARS[homeAbbr] || {rating:65};
-  var aStars = rosterData[awayAbbr] || TEAM_STARS[awayAbbr] || {rating:65};
-  var hStand = STANDINGS[ABBR_TO_NAME[homeAbbr]];
-  var aStand = STANDINGS[ABBR_TO_NAME[awayAbbr]];
+var SEASON_AVGS={
+“Shai Gilgeous-Alexander”:{pts:32.1},“Victor Wembanyama”:{pts:25.4},
+“LeBron James”:{pts:23.8},“Anthony Davis”:{pts:26.1},
+“Nikola Jokic”:{pts:29.3},“Jamal Murray”:{pts:21.5},
+“Anthony Edwards”:{pts:27.8},“Kevin Durant”:{pts:27.3},
+“Alperen Sengun”:{pts:21.1},“Jalen Brunson”:{pts:26.0},
+“Karl-Anthony Towns”:{pts:24.9},“Donovan Mitchell”:{pts:25.5},
+“Jayson Tatum”:{pts:27.0},“Jaylen Brown”:{pts:22.1},
+“Cade Cunningham”:{pts:26.9},“Scottie Barnes”:{pts:21.8},
+“Trae Young”:{pts:25.6},“Paolo Banchero”:{pts:22.6},
+“LaMelo Ball”:{pts:24.1},“Devin Booker”:{pts:25.8},
+“Stephen Curry”:{pts:26.4},“Luka Doncic”:{pts:28.1},
+“Giannis Antetokounmpo”:{pts:27.1},“Tyrese Maxey”:{pts:25.9},
+};
 
-  /* Star power (30%) — avg of both teams' star ratings */
-  var starScore = Math.round((hStars.rating + aStars.rating) / 2);
+/* ── STATE ── */
+var liveGames=[],lastFetched=null,isFetching=false;
+var liveRosters=null;
+var charts={},expandedGame=null,currentGameTab=‘live’;
+var expandedTeam=null,currentConf=‘W’,currentPage=‘games’;
 
-  /* Playoff stakes (28%) — reuse live stakes logic */
-  var stakes = calcStakes(homeAbbr, awayAbbr);
-
-  /* Matchup quality (22%) — how good are both teams by net rating */
-  var hNet = hStand ? hStand.netRtg : 0;
-  var aNet = aStand ? aStand.netRtg : 0;
-  var avgNet = (hNet + aNet) / 2;
-  var matchupScore = Math.min(100, Math.max(0, 50 + avgNet * 4));
-
-  /* Win probability tightness (20%) — closer to 50/50 = more exciting */
-  var tightnessScore = 50;
-  if (winProb) {
-    var hProb = winProb[homeAbbr] || 50;
-    var diff = Math.abs(hProb - 50);
-    tightnessScore = Math.round(Math.max(10, 100 - diff * 2));
-  }
-
-  var total = Math.round(
-    starScore    * 0.30 +
-    stakes.score * 0.28 +
-    matchupScore * 0.22 +
-    tightnessScore * 0.20
-  );
-
-  return {
-    total: Math.min(99, Math.max(1, total)),
-    stakes: stakes,
-    factors: {
-      star:      {val: starScore,      wt: '30%', label: 'Star power'},
-      stakes:    {val: stakes.score,   wt: '28%', label: 'Playoff stakes'},
-      matchup:   {val: Math.round(matchupScore), wt: '22%', label: 'Matchup quality'},
-      tightness: {val: tightnessScore, wt: '20%', label: 'Win prob. tightness'},
-    },
-    starPlayers: {
-      home: {abbr: homeAbbr, players: hStars.players || [], ppg: hStars.ppg || []},
-      away: {abbr: awayAbbr, players: aStars.players || [], ppg: aStars.ppg || []},
-    },
-    winProb: winProb,
-  };
+/* ── HELPERS ── */
+function barColor(v){return v>=70?’#16a34a’:v>=50?’#2563eb’:v>=35?’#f59e0b’:’#dc2626’;}
+function wsClass(v){return v>=70?‘green’:v>=45?‘yellow’:‘red’;}
+function wsBadgeCls(v){return v>=70?‘pill-green’:v>=45?‘pill-yellow’:‘pill-red’;}
+function wsBadgeTxt(v){return v>=70?‘Hot’:v>=45?‘Ok’:‘Skip’;}
+function pregameBadgeTxt(v){return v>=70?‘Must watch’:v>=55?‘Worth it’:v>=40?‘Average’:‘Skip’;}
+function verdictStyle(s){
+if(s>=65) return ‘background:var(–green-bg);color:var(–green-text)’;
+if(s>=50) return ‘background:var(–yellow-bg);color:var(–yellow-text)’;
+return ‘background:var(–red-bg);color:var(–red-text)’;
+}
+function verdictTxt(s){
+if(s>=80) return ‘Must watch right now’;
+if(s>=65) return ‘Worth turning on’;
+if(s>=50) return ‘Decent if interested’;
+if(s>=35) return ‘Skip unless your team’;
+return ‘Hard pass’;
+}
+function pregameVerdictTxt(s){
+if(s>=75) return ‘Circle this one — top game tonight’;
+if(s>=60) return ‘Should be a good one’;
+if(s>=45) return ‘Watchable if nothing else is on’;
+return ‘Low priority tonight’;
+}
+function seedChip(rank){
+if(rank<=2) return {label:’#’+rank+’ Locked’,cls:‘pill-green’};
+if(rank<=6) return {label:’#’+rank+’ seed’,cls:‘pill-blue’};
+if(rank<=10) return {label:’#’+rank+’ Play-in’,cls:‘pill-yellow’};
+return {label:‘Eliminated’,cls:‘pill-red’};
+}
+function fmtTime(isoStr){
+if(!isoStr) return ‘’;
+try{return new Date(isoStr).toLocaleTimeString([],{hour:‘numeric’,minute:‘2-digit’,timeZoneName:‘short’});}
+catch(e){return ‘’;}
+}
+function getElapsedPct(quarter,clockStr){
+var m=(clockStr||’’).match(/(\d+):(\d+)/);
+var secLeft=m?parseInt(m[1])*60+parseInt(m[2]):720;
+return Math.min(((quarter-1)*12+(720-secLeft)/60)/48,1);
 }
 
-/* ══════════════════════════════════════════
-   LIVE WATCHABILITY ALGORITHM
-══════════════════════════════════════════ */
-var W = {pace:0.26, star:0.24, stakes:0.22, closeness:0.18, clutch:0.10};
-var SEASON_AVGS = {
-  "Shai Gilgeous-Alexander":{pts:32.1},"Victor Wembanyama":{pts:25.4},
-  "LeBron James":{pts:23.8},"Anthony Davis":{pts:26.1},
-  "Nikola Jokic":{pts:29.3},"Jamal Murray":{pts:21.5},
-  "Anthony Edwards":{pts:27.8},"Kevin Durant":{pts:27.3},
-  "Alperen Sengun":{pts:21.1},"Jalen Brunson":{pts:26.0},
-  "Karl-Anthony Towns":{pts:24.9},"Donovan Mitchell":{pts:25.5},
-  "Jayson Tatum":{pts:27.0},"Jaylen Brown":{pts:22.1},
-  "Cade Cunningham":{pts:26.9},"Scottie Barnes":{pts:21.8},
-  "Trae Young":{pts:25.6},"Paolo Banchero":{pts:22.6},
-  "LaMelo Ball":{pts:24.1},"Devin Booker":{pts:25.8},
-  "Stephen Curry":{pts:26.4},"Cooper Flagg":{pts:18.7},
+/* ── STAKES ── */
+function calcStakes(homeAbbr,awayAbbr){
+var h=STANDINGS[ABBR_TO_NAME[homeAbbr]];
+var a=STANDINGS[ABBR_TO_NAME[awayAbbr]];
+if(!h||!a) return {score:20,label:‘Low stakes’,cls:‘pill-gray’,reason:‘No data’};
+var sameConf=h.conf===a.conf;
+var hR=h.confRank,aR=a.confRank;
+var score=20,reasons=[];
+if(sameConf&&hR<=10&&aR<=10){
+var d=Math.abs(hR-aR);
+if(d<=2){score+=50;reasons.push(‘Direct seed battle’);}
+else if(d<=4){score+=35;reasons.push(‘Seed positioning’);}
+else{score+=20;reasons.push(‘Conference game’);}
+}else if(hR<=10&&aR<=10){score+=25;reasons.push(‘Both contenders’);}
+if([hR,aR].some(function(r){return r===6||r===7;})){score+=20;reasons.push(‘Playoff cut line’);}
+if([hR,aR].some(function(r){return r>=8&&r<=10;})){score+=15;reasons.push(‘Play-in bubble’);}
+score=Math.min(100,Math.round(score*1.3));
+return{
+score:score,
+label:score>=70?‘High stakes’:score>=45?‘Playoff implications’:‘Low stakes’,
+cls:score>=70?‘pill-red’:score>=45?‘pill-yellow’:‘pill-gray’,
+reason:reasons.join(’ · ’)||‘Low stakes’,
 };
-
-function getElapsedPct(quarter, clockStr) {
-  var m = (clockStr || '').match(/(\d+):(\d+)/);
-  var secLeft = m ? parseInt(m[1]) * 60 + parseInt(m[2]) : 720;
-  return Math.min(((quarter - 1) * 12 + (720 - secLeft) / 60) / 48, 1);
 }
 
-function calcStakes(homeAbbr, awayAbbr) {
-  var h = STANDINGS[ABBR_TO_NAME[homeAbbr]];
-  var a = STANDINGS[ABBR_TO_NAME[awayAbbr]];
-  if (!h || !a) return {score:20, label:'Low stakes', cls:'pill-gray', reason:'No data'};
-  var sameConf = h.conf === a.conf;
-  var hR = h.confRank, aR = a.confRank;
-  var score = 20, reasons = [];
-  if (sameConf && hR <= 10 && aR <= 10) {
-    var d = Math.abs(hR - aR);
-    if (d <= 2) { score += 50; reasons.push('Direct seed battle'); }
-    else if (d <= 4) { score += 35; reasons.push('Seed positioning'); }
-    else { score += 20; reasons.push('Conference game'); }
-  } else if (hR <= 10 && aR <= 10) { score += 25; reasons.push('Both contenders'); }
-  if ([hR, aR].some(function(r){ return r===6||r===7; })) { score += 20; reasons.push('Playoff cut line'); }
-  if ([hR, aR].some(function(r){ return r>=8&&r<=10; })) { score += 15; reasons.push('Play-in bubble'); }
-  score = Math.min(100, Math.round(score * 1.3));
-  return {
-    score: score,
-    label: score>=70?'High stakes':score>=45?'Playoff implications':'Low stakes',
-    cls:   score>=70?'pill-red':score>=45?'pill-yellow':'pill-gray',
-    reason: reasons.join(' · ') || 'Low stakes',
-  };
+/* ── PREGAME WATCHABILITY ── */
+function getStars(abbr){
+if(liveRosters&&liveRosters[abbr]) return liveRosters[abbr];
+return DEFAULT_STARS[abbr]||{players:[],ppg:[],rating:65,starInjuries:[],otherInjuries:[]};
 }
 
-function calcWatchability(game) {
-  if (game.status === 'scheduled') return null;
-  var gp = getElapsedPct(game.quarter || 1, game.clock);
-  var homeScore = game.home.score || 0;
-  var awayScore = game.away.score || 0;
-  var totalPts = homeScore + awayScore;
-  var homeFG = game.home.fgPct || 0.45;
-  var awayFG = game.away.fgPct || 0.45;
-  var efgMult = ((homeFG+awayFG)/2) > 0.55 ? 1.2 : ((homeFG+awayFG)/2) > 0.48 ? 1.05 : ((homeFG+awayFG)/2) > 0.40 ? 0.90 : 0.75;
-  var paceRaw = gp < 0.05 ? 50 : Math.min(100, Math.max(0, 50 + (totalPts - 220*gp) * 3));
-  var pace = Math.min(100, Math.round(paceRaw * efgMult));
-  var allPlayers = (game.leaders ? (game.leaders.home||[]).concat(game.leaders.away||[]) : []);
-  var starSum = 0, starCt = 0;
-  allPlayers.forEach(function(p) {
-    var avg = (SEASON_AVGS[p.name]||{pts:12}).pts;
-    var proj = avg*gp;
-    var absScore = Math.min(100, p.pts/(avg*0.5+0.01)*50);
-    var perfScore = gp<0.05?50:Math.min(100,50+(p.pts-proj)*5);
-    starSum += absScore*0.4+perfScore*0.6; starCt++;
+function calcPregame(homeAbbr,awayAbbr,winProb){
+var hStars=getStars(homeAbbr);
+var aStars=getStars(awayAbbr);
+var hStand=STANDINGS[ABBR_TO_NAME[homeAbbr]];
+var aStand=STANDINGS[ABBR_TO_NAME[awayAbbr]];
+var starScore=Math.round(((hStars.rating||65)+(aStars.rating||65))/2);
+var stakes=calcStakes(homeAbbr,awayAbbr);
+var hNet=hStand?hStand.netRtg:0;
+var aNet=aStand?aStand.netRtg:0;
+var matchupScore=Math.min(100,Math.max(0,50+((hNet+aNet)/2)*4));
+var tightScore=50;
+if(winProb){
+var hP=winProb[homeAbbr]||50;
+tightScore=Math.round(Math.max(10,100-Math.abs(hP-50)*2));
+}
+var total=Math.round(starScore*0.30+stakes.score*0.28+matchupScore*0.22+tightScore*0.20);
+return{
+total:Math.min(99,Math.max(1,total)),
+stakes:stakes,
+starScore:starScore,
+matchupScore:Math.round(matchupScore),
+tightScore:tightScore,
+hStars:hStars,
+aStars:aStars,
+};
+}
+
+/* ── LIVE WATCHABILITY ── */
+function calcWatchability(game){
+if(game.status===‘scheduled’) return null;
+var gp=getElapsedPct(game.quarter||1,game.clock);
+var hs=game.home.score||0,as=game.away.score||0;
+var totalPts=hs+as;
+var avgFG=((game.home.fgPct||0.45)+(game.away.fgPct||0.45))/2;
+var efgMult=avgFG>0.55?1.2:avgFG>0.48?1.05:avgFG>0.40?0.90:0.75;
+var paceRaw=gp<0.05?50:Math.min(100,Math.max(0,50+(totalPts-220*gp)*3));
+var pace=Math.min(100,Math.round(paceRaw*efgMult));
+var allP=(game.leaders?(game.leaders.home||[]).concat(game.leaders.away||[]):[]);
+var sSum=0,sCt=0;
+allP.forEach(function(p){
+var avg=(SEASON_AVGS[p.name]||{pts:12}).pts;
+var proj=avg*gp;
+var absS=Math.min(100,p.pts/(avg*0.5+0.01)*50);
+var perfS=gp<0.05?50:Math.min(100,50+(p.pts-proj)*5);
+sSum+=absS*0.4+perfS*0.6;sCt++;
+});
+var star=sCt?Math.round(sSum/sCt):40;
+var stakes=calcStakes(game.home.abbr,game.away.abbr);
+var margin=Math.abs(hs-as);
+var gpW=Math.min(1,gp*3);
+var closeness=Math.round(Math.max(0,100-margin*4)*gpW+50*(1-gpW));
+var mm=(game.clock||’’).match(/(\d+):(\d+)/);
+var secLeft=mm?parseInt(mm[1])*60+parseInt(mm[2]):720;
+var clutch=(game.quarter||1)>=4?Math.min(100,40+(720-secLeft)/7.2):(game.quarter||1)===3&&secLeft<180?30:8;
+var total=Math.round(pace*0.26+star*0.24+stakes.score*0.22+closeness*0.18+Math.round(clutch)*0.10);
+return{
+total:Math.min(99,Math.max(1,total)),stakes:stakes,
+factors:{
+pace:{val:pace,wt:‘26%’,label:‘Pace & scoring’},
+star:{val:star,wt:‘24%’,label:‘Star performances’},
+stakes:{val:stakes.score,wt:‘22%’,label:‘Playoff stakes’},
+closeness:{val:closeness,wt:‘18%’,label:‘Game closeness’},
+clutch:{val:Math.round(clutch),wt:‘10%’,label:‘Clutch factor’},
+},
+};
+}
+
+/* ── FETCH ── */
+async function fetchRosters(){
+try{
+var res=await fetch(’/api/rosters’);
+var data=await res.json();
+if(data.success&&data.teams){
+liveRosters=data.teams;
+var el=document.getElementById(‘roster-status’);
+if(el) el.textContent=data.hasLiveInjuries?‘Live injury report loaded’:‘Using season rosters’;
+}
+}catch(err){console.log(‘Roster fetch failed:’,err.message);}
+}
+
+async function fetchScores(){
+if(isFetching) return;
+isFetching=true;
+document.getElementById(‘refresh-btn’).disabled=true;
+try{
+var res=await fetch(’/api/scores’);
+var data=await res.json();
+if(!data.success) throw new Error(data.error||‘API error’);
+liveGames=data.games||[];
+lastFetched=new Date();
+var live=liveGames.filter(function(g){return g.status===‘inprogress’;}).length;
+var upcoming=liveGames.filter(function(g){return g.status===‘scheduled’;}).length;
+var final=liveGames.filter(function(g){return g.status===‘final’;}).length;
+document.getElementById(‘tab-live’).textContent=‘Live (’+live+’)’;
+document.getElementById(‘tab-upcoming’).textContent=‘Upcoming (’+upcoming+’)’;
+document.getElementById(‘tab-final’).textContent=‘Final (’+final+’)’;
+hideBanner();updateTimestamp();
+}catch(err){showBanner(‘error’,’Could not load scores: ’+err.message);}
+finally{isFetching=false;document.getElementById(‘refresh-btn’).disabled=false;}
+}
+
+async function fetchAndRender(){
+if(!liveRosters) await fetchRosters();
+await fetchScores();
+if(currentPage===‘games’) renderGames();
+}
+
+async function fetchBoxScore(gameId){
+try{
+var res=await fetch(’/api/boxscore?gameId=’+gameId);
+var data=await res.json();
+if(!data.success) return;
+var g=liveGames.find(function(x){return x.id===gameId;});
+if(!g) return;
+g.leaders={home:data.home.players.slice(0,6),away:data.away.players.slice(0,6)};
+renderGames();
+setTimeout(function(){drawWinChart(‘ch-’+gameId,g);},80);
+}catch(err){console.error(‘boxscore error:’,err);}
+}
+
+function updateTimestamp(){
+if(!lastFetched) return;
+var secs=Math.round((Date.now()-lastFetched)/1000);
+document.getElementById(‘upd-text’).textContent=secs<5?‘Updated just now’:’Updated ’+secs+‘s ago’;
+}
+function showBanner(type,msg){var el=document.getElementById(‘status-banner’);el.className=’status-banner ’+type;el.textContent=msg;}
+function hideBanner(){document.getElementById(‘status-banner’).style.display=‘none’;}
+
+/* ── STANDINGS STRIP HTML ── */
+function standHtml(homeAbbr,awayAbbr,homeName,awayName){
+return [{abbr:awayAbbr,name:awayName},{abbr:homeAbbr,name:homeName}].map(function(t){
+var s=STANDINGS[t.name]||STANDINGS[ABBR_TO_NAME[t.abbr]];
+if(!s) return ‘<div class="scard"><div class="scard-name">’+t.abbr+’</div></div>’;
+var si=seedChip(s.confRank);
+return ‘<div class="scard"><div class="scard-name">’+t.abbr+’ <span style="font-weight:400;font-size:11px;color:var(--text2);">’+(s.conf===‘E’?‘East’:‘West’)+’</span></div><div class="scard-rec">’+s.wins+’-’+s.losses+’</div><span class="scard-seed '+si.cls+'">’+si.label+’</span></div>’;
+}).join(’’);
+}
+
+/* ── FACTOR BARS HTML ── */
+function factorBarsHtml(factors){
+return Object.keys(factors).map(function(k){
+var f=factors[k];
+return ‘<div class="factor"><div class="factor-top"><span class="factor-name">’+f.label+’</span><span class="factor-wt">’+f.wt+’</span></div><div class="factor-bar-bg"><div class="factor-bar" style="width:'+f.val+'%;background:'+barColor(f.val)+';"></div></div><div class="factor-val">’+f.val+’<span>/100</span></div></div>’;
+}).join(’’);
+}
+
+/* ── RENDER GAMES ── */
+function renderGames(){
+var list;
+if(currentGameTab===‘live’) list=liveGames.filter(function(g){return g.status===‘inprogress’;});
+if(currentGameTab===‘upcoming’) list=liveGames.filter(function(g){return g.status===‘scheduled’;});
+if(currentGameTab===‘final’) list=liveGames.filter(function(g){return g.status===‘final’;});
+if(!list||!list.length){
+if(!lastFetched){showBanner(‘loading’,‘Fetching live scores…’);}
+else{showBanner(‘empty’,currentGameTab===‘live’?‘No games in progress. Check Upcoming or Final.’:‘No ‘+currentGameTab+’ games right now.’);}
+document.getElementById(‘games-container’).innerHTML=’’;
+return;
+}
+hideBanner();
+if(currentGameTab===‘live’){
+list=list.slice().sort(function(a,b){
+var wa=calcWatchability(a),wb=calcWatchability(b);
+return (wb?wb.total:0)-(wa?wa.total:0);
+});
+}
+if(currentGameTab===‘upcoming’){
+list=list.slice().sort(function(a,b){
+var wa=calcPregame(a.home.abbr,a.away.abbr,null);
+var wb=calcPregame(b.home.abbr,b.away.abbr,null);
+return wb.total-wa.total;
+});
+}
+document.getElementById(‘games-container’).innerHTML=list.map(renderCard).join(’’);
+}
+
+function renderCard(g){
+var isExp=expandedGame===g.id;
+
+/* ── UPCOMING (pregame) ── */
+if(g.status===‘scheduled’){
+var pw=calcPregame(g.home.abbr,g.away.abbr,g.winProb||null);
+var stakesBadge=pw.stakes.score>=45?’<span class="stakes-pill '+pw.stakes.cls+'">’+pw.stakes.label+’</span>’:’’;
+var statusPill=’<span class="pill pill-upcoming">’+fmtTime(g.startTime)+’</span>’;
+var wsHtml=’<div class="ws-block"><span class="ws-label">Pregame</span><span class="ws-num '+wsClass(pw.total)+'">’+pw.total+’</span><span class="pill '+wsBadgeCls(pw.total)+'" style="font-size:11px;">’+pregameBadgeTxt(pw.total)+’</span></div>’;
+
+```
+var expandHtml='';
+if(isExp){
+  /* factor bars */
+  var fcHtml=factorBarsHtml({
+    star:{val:pw.starScore,wt:'30%',label:'Star power'},
+    stakes:{val:pw.stakes.score,wt:'28%',label:'Playoff stakes'},
+    matchup:{val:pw.matchupScore,wt:'22%',label:'Matchup quality'},
+    tightness:{val:pw.tightScore,wt:'20%',label:'Win prob. tightness'},
   });
-  var star = starCt ? Math.round(starSum/starCt) : 40;
-  var stakes = calcStakes(game.home.abbr, game.away.abbr);
-  var margin = Math.abs(homeScore - awayScore);
-  var gpW = Math.min(1, gp*3);
-  var closeness = Math.round(Math.max(0,100-margin*4)*gpW+50*(1-gpW));
-  var mm = (game.clock||'').match(/(\d+):(\d+)/);
-  var secLeft = mm ? parseInt(mm[1])*60+parseInt(mm[2]) : 720;
-  var clutch = (game.quarter||1)>=4 ? Math.min(100,40+(720-secLeft)/7.2) : (game.quarter||1)===3&&secLeft<180?30:8;
-  var total = Math.round(pace*W.pace+star*W.star+stakes.score*W.stakes+closeness*W.closeness+Math.round(clutch)*W.clutch);
-  return {
-    total: Math.min(99,Math.max(1,total)), stakes: stakes,
-    factors: {
-      pace:      {val:pace,               wt:'26%',label:'Pace & scoring'},
-      star:      {val:star,               wt:'24%',label:'Star performances'},
-      stakes:    {val:stakes.score,       wt:'22%',label:'Playoff stakes'},
-      closeness: {val:closeness,          wt:'18%',label:'Game closeness'},
-      clutch:    {val:Math.round(clutch), wt:'10%',label:'Clutch factor'},
-    },
-  };
-}
 
-/* ══════════════════════════════════════════
-   HELPERS
-══════════════════════════════════════════ */
-function barColor(v) { return v>=70?'#16a34a':v>=50?'#2563eb':v>=35?'#f59e0b':'#dc2626'; }
-function wsClass(v)  { return v>=70?'green':v>=45?'yellow':'red'; }
-function wsBadgeCls(v) { return v>=70?'pill-green':v>=45?'pill-yellow':'pill-red'; }
-function wsBadgeTxt(v) { return v>=70?'🔥 Hot':v>=45?'👀 Ok':'💤 Skip'; }
-function pregameBadgeTxt(v) { return v>=70?'🔥 Must watch':v>=55?'👀 Worth it':v>=40?'😐 Average':'💤 Skip'; }
-function verdictText(s) {
-  if(s>=80) return {t:'🔥 Must watch right now',  style:'background:var(--green-bg);color:var(--green-text)'};
-  if(s>=65) return {t:'👀 Worth turning on',       style:'background:var(--green-bg);color:var(--green-text)'};
-  if(s>=50) return {t:'🤷 Decent if interested',  style:'background:var(--yellow-bg);color:var(--yellow-text)'};
-  if(s>=35) return {t:'😴 Skip unless your team', style:'background:var(--red-bg);color:var(--red-text)'};
-  return           {t:'💤 Hard pass',              style:'background:var(--red-bg);color:var(--red-text)'};
-}
-function pregameVerdict(s) {
-  if(s>=75) return {t:'🔥 Circle this one — top game tonight', style:'background:var(--green-bg);color:var(--green-text)'};
-  if(s>=60) return {t:'👀 Should be a good one',               style:'background:var(--green-bg);color:var(--green-text)'};
-  if(s>=45) return {t:'😐 Watchable if you have nothing else', style:'background:var(--yellow-bg);color:var(--yellow-text)'};
-  return           {t:'💤 Low priority tonight',               style:'background:var(--red-bg);color:var(--red-text)'};
-}
-function seedChip(rank) {
-  if(rank<=2)  return {label:'#'+rank+' · Locked',  cls:'pill-green'};
-  if(rank<=6)  return {label:'#'+rank+' seed',       cls:'pill-blue'};
-  if(rank<=10) return {label:'#'+rank+' · Play-in',  cls:'pill-yellow'};
-  return              {label:'Eliminated',            cls:'pill-red'};
-}
-function fmtTime(isoStr) {
-  if(!isoStr) return '';
-  try { return new Date(isoStr).toLocaleTimeString([],{hour:'numeric',minute:'2-digit',timeZoneName:'short'}); }
-  catch(e) { return ''; }
-}
-
-/* ══════════════════════════════════════════
-   DATA FETCH
-══════════════════════════════════════════ */
-var liveGames = [], lastFetched = null, isFetching = false;
-var liveRosters = null;  // populated from /api/rosters
-
-async function fetchRosters() {
-  try {
-    var res = await fetch('/api/rosters');
-    var data = await res.json();
-    if (data.success && data.teams) {
-      liveRosters = data.teams;
-      console.log('Rosters loaded. Live injuries:', data.hasLiveInjuries);
-      var statusEl = document.getElementById('roster-status');
-      if (statusEl) {
-        statusEl.textContent = data.hasLiveInjuries
-          ? '✓ Live injury report loaded · star ratings adjusted'
-          : '⚠ Injury report unavailable · using season averages';
-      }
-    }
-  } catch(err) {
-    console.log('Roster fetch failed, using defaults:', err.message);
-  }
-}
-
-async function fetchScores() {
-  if(isFetching) return;
-  isFetching = true;
-  document.getElementById('refresh-btn').disabled = true;
-  try {
-    var res = await fetch('/api/scores');
-    var data = await res.json();
-    if(!data.success) throw new Error(data.error||'API error');
-    liveGames = data.games||[];
-    lastFetched = new Date();
-    var live     = liveGames.filter(function(g){return g.status==='inprogress';}).length;
-    var upcoming = liveGames.filter(function(g){return g.status==='scheduled';}).length;
-    var final    = liveGames.filter(function(g){return g.status==='final';}).length;
-    document.getElementById('tab-live').textContent     = 'Live ('+live+')';
-    document.getElementById('tab-upcoming').textContent = 'Upcoming ('+upcoming+')';
-    document.getElementById('tab-final').textContent    = 'Final ('+final+')';
-    hideBanner(); updateTimestamp();
-  } catch(err) {
-    showBanner('error','⚠️ Could not load scores: '+err.message);
-  } finally {
-    isFetching = false;
-    document.getElementById('refresh-btn').disabled = false;
-  }
-}
-
-async function fetchAndRender() {
-  // Fetch rosters once if not yet loaded
-  if (!liveRosters) await fetchRosters();
-  await fetchScores();
-  if(currentPage==='games') renderGames();
-}
-
-function updateTimestamp() {
-  if(!lastFetched) return;
-  var secs = Math.round((Date.now()-lastFetched)/1000);
-  document.getElementById('upd-text').textContent = secs<5?'Updated just now':'Updated '+secs+'s ago';
-}
-function showBanner(type,msg) { var el=document.getElementById('status-banner'); el.className='status-banner '+type; el.textContent=msg; }
-function hideBanner() { document.getElementById('status-banner').style.display='none'; }
-
-/* ══════════════════════════════════════════
-   BOX SCORE FETCH
-══════════════════════════════════════════ */
-async function fetchBoxScore(gameId) {
-  try {
-    var res = await fetch('/api/boxscore?gameId='+gameId);
-    var data = await res.json();
-    if(!data.success) return;
-    var g = liveGames.find(function(x){return x.id===gameId;});
-    if(!g) return;
-    g.leaders = {
-      home: data.home.players.slice(0,6),
-      away: data.away.players.slice(0,6),
-    };
-    renderGames();
-    setTimeout(function(){ drawWinChart('ch-'+gameId, g); }, 80);
-  } catch(err) { console.error('boxscore error:', err); }
-}
-
-/* ══════════════════════════════════════════
-   RENDER GAMES
-══════════════════════════════════════════ */
-var charts = {}, expandedGame = null, currentGameTab = 'live';
-
-function renderGames() {
-  var list;
-  if(currentGameTab==='live')     list=liveGames.filter(function(g){return g.status==='inprogress';});
-  if(currentGameTab==='upcoming') list=liveGames.filter(function(g){return g.status==='scheduled';});
-  if(currentGameTab==='final')    list=liveGames.filter(function(g){return g.status==='final';});
-  if(!list||!list.length) {
-    if(!lastFetched) { showBanner('loading','⏳ Fetching live scores...'); }
-    else { showBanner('empty', currentGameTab==='live'?'✅ No games in progress. Check Upcoming or Final tabs.':'No '+currentGameTab+' games right now.'); }
-    document.getElementById('games-container').innerHTML=''; return;
-  }
-  hideBanner();
-  if(currentGameTab==='live') {
-    list=list.slice().sort(function(a,b){
-      var wa=calcWatchability(a); var wb=calcWatchability(b);
-      return (wb?wb.total:0)-(wa?wa.total:0);
-    });
-  }
-  if(currentGameTab==='upcoming') {
-    list=list.slice().sort(function(a,b){
-      var wa=calcPregameWatchability(a.home.abbr,a.away.abbr,null);
-      var wb=calcPregameWatchability(b.home.abbr,b.away.abbr,null);
-      return wb.total-wa.total;
-    });
-  }
-  document.getElementById('games-container').innerHTML=list.map(renderGameCard).join('');
-}
-
-function renderGameCard(g) {
-  var isExp = expandedGame===g.id;
-
-  /* ── UPCOMING / PREGAME card ── */
-  if(g.status==='scheduled') {
-    var pw = calcPregameWatchability(g.home.abbr, g.away.abbr, g.winProb||null);
-    var stakesBadge = pw.stakes.score>=45
-      ? '<span class="stakes-pill '+pw.stakes.cls+'">'+pw.stakes.label+'</span>' : '';
-    var wsHtml = '<div class="ws-block"><span class="ws-label">Pregame score</span><span class="ws-num '+wsClass(pw.total)+'">'+pw.total+'</span><span class="pill '+wsBadgeCls(pw.total)+'" style="font-size:11px;">'+pregameBadgeTxt(pw.total)+'</span></div>';
-    var statusPill = '<span class="pill pill-upcoming">'+fmtTime(g.startTime)+'</span>';
-
-    var expandHtml = '';
-    if(isExp) {
-      var pv = pregameVerdict(pw.total);
-
-      var fcHtml = Object.keys(pw.factors).map(function(k){
-        var f=pw.factors[k];
-        return '<div class="factor"><div class="factor-top"><span class="factor-name">'+f.label+'</span><span class="factor-wt">'+f.wt+'</span></div><div class="factor-bar-bg"><div class="factor-bar" style="width:'+f.val+'%;background:'+barColor(f.val)+';"></div></div><div class="factor-val">'+f.val+'<span>/100</span></div></div>';
-      }).join('');
-
-      var standHtml = [
-        {abbr:g.away.abbr,name:g.away.name},
-        {abbr:g.home.abbr,name:g.home.name},
-      ].map(function(t){
-        var s=STANDINGS[t.name]||STANDINGS[ABBR_TO_NAME[t.abbr]];
-        if(!s) return '<div class="scard"><div class="scard-name">'+t.abbr+'</div></div>';
-        var si=seedChip(s.confRank);
-        return '<div class="scard"><div class="scard-name">'+t.abbr+' <span style="font-weight:400;font-size:11px;color:var(--text2);">'+(s.conf==='E'?'East':'West')+'</span></div><div class="scard-rec">'+s.wins+'–'+s.losses+'</div><span class="scard-seed '+si.cls+'">'+si.label+'</span></div>';
-      }).join('');
-
-      /* Star players preview */
-      var allStars = [];
-      (pw.starPlayers.home.players||[]).forEach(function(p,i){ allStars.push({name:p,ppg:(pw.starPlayers.home.ppg||[])[i]||0,team:pw.starPlayers.home.abbr}); });
-      (pw.starPlayers.away.players||[]).forEach(function(p,i){ allStars.push({name:p,ppg:(pw.starPlayers.away.ppg||[])[i]||0,team:pw.starPlayers.away.abbr}); });
-      allStars.sort(function(a,b){return b.ppg-a.ppg;});
-      var starRowsHtml = allStars.map(function(p){
-        return '<div class="star-row"><span class="star-team">'+p.team+'</span><span class="star-name">'+p.name+'</span><span class="star-avg">'+p.ppg+' ppg</span></div>';
-      }).join('');
-
-      /* Injury warnings for star players */
-      var injHtml = '';
-      var hInj = hStars.starInjuries || [];
-      var aInj = aStars.starInjuries || [];
-      var allStarInj = hInj.concat(aInj);
-      if (allStarInj.length > 0) {
-        var injRows = allStarInj.map(function(i) {
-          var dot = i.status === 'Out' ? '#dc2626' : i.status === 'Questionable' || i.status === 'Doubtful' ? '#f59e0b' : '#16a34a';
-          var impact = i.status === 'Out' ? '⚠️ Star missing — score adjusted' : i.status === 'Questionable' ? '⚠️ Questionable — score discounted' : '';
-          return '<div class="star-row"><span style="width:8px;height:8px;border-radius:50%;background:'+dot+';display:inline-block;flex-shrink:0;margin-right:4px;"></span><span class="star-name">'+i.name+'</span><span class="star-avg" style="color:'+dot+';">'+i.status+(i.reason?' · '+i.reason:'')+'</span></div>'+(impact?'<div style="font-size:10px;color:#f59e0b;padding:2px 0 4px 20px;">'+impact+'</div>':'');
-        }).join('');
-        injHtml = '<div class="expand-section">⚠️ Injury report</div><div class="pregame-stars">'+injRows+'</div>';
-      }
-
-      /* Win probability bars */
-      var wpHtml = '';
-      if(g.winProb) {
-        var hProb = g.winProb[g.home.abbr]||50;
-        var aProb = g.winProb[g.away.abbr]||(100-hProb);
-        wpHtml = '<div class="expand-section">Vegas win probability</div>'+
-          '<div class="win-prob-row"><span class="win-prob-team">'+g.home.abbr+'</span><div class="win-prob-bar-bg"><div class="win-prob-bar" style="width:'+hProb+'%;background:#3b82f6;"></div></div><span class="win-prob-pct">'+hProb+'%</span></div>'+
-          '<div class="win-prob-row"><span class="win-prob-team">'+g.away.abbr+'</span><div class="win-prob-bar-bg"><div class="win-prob-bar" style="width:'+aProb+'%;background:#f97316;"></div></div><span class="win-prob-pct">'+aProb+'%</span></div>';
-      }
-
-      expandHtml = '<div class="expand-body open">'+
-        '<div class="algo-note">Pregame weights: <strong>star power</strong> 30% · <strong>playoff stakes</strong> 28% · matchup quality 22% · win prob. tightness 20%<br>Stakes: '+pw.stakes.reason+' · '+pw.stakes.label+' ('+pw.stakes.score+'/100)</div>'+
-        '<div class="standings-strip">'+standHtml+'</div>'+
-        '<div class="expand-section">Score factors</div>'+
-        '<div class="pregame-factors">'+fcHtml+'</div>'+
-        '<div class="expand-section">Players to watch tonight</div>'+
-        '<div class="pregame-stars">'+starRowsHtml+'</div>'+
-        injHtml+
-        wpHtml+
-        '<div class="verdict" style="'+pv.style+'">'+pv.t+'</div>'+
-        '</div>';
-    }
-
-    return '<div class="card '+(isExp?'expanded':'')+'" onclick="toggleGame(\''+g.id+'\')"><div class="card-header">'+statusPill+'<div class="matchup"><div class="team-blk"><span class="team-abbr">'+g.away.abbr+'</span></div><span class="at-sep">@</span><div class="team-blk"><span class="team-abbr">'+g.home.abbr+'</span></div>'+stakesBadge+'</div>'+wsHtml+'</div>'+expandHtml+'</div>';
-  }
-
-  /* ── LIVE / FINAL card ── */
-  var ws = calcWatchability(g);
-  var gp = getElapsedPct(g.quarter||1, g.clock);
-  var stakes = calcStakes(g.home.abbr, g.away.abbr);
-  var stakesBadge = stakes.score>=45 ? '<span class="stakes-pill '+stakes.cls+'">'+stakes.label+'</span>' : '';
-  var broadcastBadge = g.broadcasts&&g.broadcasts.length ? '<span class="broadcast">'+g.broadcasts[0]+'</span>' : '';
-  var statusPill = g.status==='inprogress'
-    ? '<span class="pill pill-live"><span class="live-dot" style="width:6px;height:6px;display:inline-block;vertical-align:middle;margin-right:4px;"></span>Q'+g.quarter+' · '+g.clock+'</span>'
-    : '<span class="pill pill-final">Final</span>';
-  var homeLeading = (g.home.score||0)>(g.away.score||0);
-  var homeScoreHtml = g.home.score!=null?'<span class="team-score '+(homeLeading?'leading':'trailing')+'">'+g.home.score+'</span>':'';
-  var awayScoreHtml = g.away.score!=null?'<span class="team-score '+(!homeLeading?'leading':'trailing')+'">'+g.away.score+'</span>':'';
-  var wsHtml = ws
-    ? '<div class="ws-block"><span class="ws-label">Watchability</span><span class="ws-num '+wsClass(ws.total)+'">'+ws.total+'</span><span class="pill '+wsBadgeCls(ws.total)+'" style="font-size:11px;">'+wsBadgeTxt(ws.total)+'</span></div>'
-    : '<div class="ws-block"><span class="ws-label">Final</span></div>';
-
-  var expandHtml = '';
-  if(isExp&&ws) {
-    var v = verdictText(ws.total);
-    var fcHtml = Object.keys(ws.factors).map(function(k){
-      var f=ws.factors[k];
-      return '<div class="factor"><div class="factor-top"><span class="factor-name">'+f.label+'</span><span class="factor-wt">'+f.wt+'</span></div><div class="factor-bar-bg"><div class="factor-bar" style="width:'+f.val+'%;background:'+barColor(f.val)+';"></div></div><div class="factor-val">'+f.val+'<span>/100</span></div></div>';
-    }).join('');
-    var standHtml = [{abbr:g.away.abbr,name:g.away.name},{abbr:g.home.abbr,name:g.home.name}].map(function(t){
-      var s=STANDINGS[t.name]||STANDINGS[ABBR_TO_NAME[t.abbr]];
-      if(!s) return '<div class="scard"><div class="scard-name">'+t.abbr+'</div></div>';
-      var si=seedChip(s.confRank);
-      return '<div class="scard"><div class="scard-name">'+t.abbr+' <span style="font-weight:400;font-size:11px;color:var(--text2);">'+(s.conf==='E'?'East':'West')+'</span></div><div class="scard-rec">'+s.wins+'–'+s.losses+'</div><span class="scard-seed '+si.cls+'">'+si.label+'</span></div>';
-    }).join('');
-    var periodHtml = '';
-    if(g.periodScores&&g.periodScores.length) {
-      var cols=g.periodScores.map(function(p){ return '<div class="period-col"><div class="period-hdr">Q'+p.period+'</div><div class="period-score away">'+p.away+'</div><div class="period-score home">'+p.home+'</div></div>'; }).join('');
-      periodHtml='<div class="expand-section">Quarter scores — '+g.away.abbr+' / '+g.home.abbr+'</div><div class="period-scores">'+cols+'<div class="period-col"><div class="period-hdr">TOT</div><div class="period-score away" style="font-weight:700;">'+(g.away.score||0)+'</div><div class="period-score home" style="font-weight:700;">'+(g.home.score||0)+'</div></div></div>';
-    }
-    var leadersHtml = '';
-    if(g.leaders&&((g.leaders.home&&g.leaders.home.length)||(g.leaders.away&&g.leaders.away.length))) {
-      var renderTeamPlayers = function(players, label) {
-        if(!players||!players.length) return '';
-        var rows=players.map(function(p){ var fg=(p.fgm!==undefined&&p.fga!==undefined)?p.fgm+'/'+p.fga:''; return '<div class="player-row"><span class="player-name">'+p.name+'</span><span class="player-stat">'+p.reb+'</span><span class="player-stat">'+p.ast+'</span><span class="player-stat">'+fg+'</span><span class="player-stat pts">'+p.pts+'</span></div>'; }).join('');
-        return '<div class="box-team-col"><div class="box-team-lbl">'+label+'</div><div class="stat-headers"><span class="stat-hdr name">Player</span><span class="stat-hdr">Reb</span><span class="stat-hdr">Ast</span><span class="stat-hdr">FG</span><span class="stat-hdr pts">Pts</span></div>'+rows+'</div>';
-      };
-      leadersHtml='<div class="expand-section">Box score</div><div class="box-row">'+renderTeamPlayers(g.leaders.away,g.away.abbr)+renderTeamPlayers(g.leaders.home,g.home.abbr)+'</div>';
-    } else if(g.status==='inprogress'||g.status==='final') {
-      leadersHtml='<div class="expand-section">Box score</div><div class="loading-box">Loading player stats...</div>';
-    }
-    var chartId='ch-'+g.id;
-    expandHtml='<div class="expand-body open"><div class="algo-note">v3 weights: <strong>pace</strong> 26% · <strong>stars</strong> 24% · <strong>playoff stakes</strong> 22% · closeness 18% · clutch 10%<br>Stakes: '+ws.stakes.reason+' · '+ws.stakes.label+' ('+ws.stakes.score+'/100)</div><div class="standings-strip">'+standHtml+'</div>'+periodHtml+'<div class="expand-section">Score factors</div><div class="factors-grid">'+fcHtml+'</div><div class="chart-section"><div class="chart-label">Win probability</div><div class="chart-legend"><span><span class="legend-line" style="background:#3b82f6;"></span>'+g.home.abbr+'</span><span><span class="legend-line" style="background:#f97316;"></span>'+g.away.abbr+'</span></div><div class="chart-wrap"><canvas id="'+chartId+'"></canvas></div></div>'+leadersHtml+'<div class="verdict" style="'+v.style+'">'+v.t+'</div></div>';
-  }
-  return '<div class="card '+(isExp?'expanded':'')+'" onclick="toggleGame(\''+g.id+'\')"><div class="card-header">'+statusPill+'<div class="matchup"><div class="team-blk"><span class="team-abbr">'+g.away.abbr+'</span>'+awayScoreHtml+'</div><span class="at-sep">@</span><div class="team-blk"><span class="team-abbr">'+g.home.abbr+'</span>'+homeScoreHtml+'</div>'+stakesBadge+broadcastBadge+'</div>'+wsHtml+'</div>'+expandHtml+'</div>';
-}
-
-function toggleGame(id) {
-  expandedGame = expandedGame===id ? null : id;
-  renderGames();
-  if(expandedGame) {
-    var g = liveGames.find(function(x){return x.id===id;});
-    if(g) {
-      if(g.status==='inprogress'||g.status==='final') {
-        setTimeout(function(){ drawWinChart('ch-'+id,g); }, 80);
-        fetchBoxScore(id);
-      }
-    }
-  }
-}
-
-function drawWinChart(cid, g) {
-  var ex=charts[cid]; if(ex){ex.destroy();delete charts[cid];}
-  var canvas=document.getElementById(cid); if(!canvas) return;
-  var gp=getElapsedPct(g.quarter||1,g.clock);
-  var margin=(g.home.score||0)-(g.away.score||0);
-  var curHome=Math.min(95,Math.max(5,50+margin*3*(gp>0.1?1:0.3)));
-  var homeData=[50,Math.round(50+margin*1.5*(gp/2)),Math.round(curHome)];
-  var awayData=homeData.map(function(v){return 100-v;});
-  var isDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
-  var gridColor=isDark?'rgba(255,255,255,0.07)':'rgba(0,0,0,0.05)';
-  var tickColor=isDark?'#78716c':'#a8a29e';
-  charts[cid]=new Chart(canvas,{
-    type:'line',
-    data:{labels:['Game start','Mid-game','Now'],datasets:[
-      {label:g.home.abbr,data:homeData,borderColor:'#3b82f6',borderWidth:2,pointRadius:3,pointBackgroundColor:'#3b82f6',tension:0.4,fill:false},
-      {label:g.away.abbr,data:awayData,borderColor:'#f97316',borderWidth:2,pointRadius:3,pointBackgroundColor:'#f97316',tension:0.4,fill:false},
-    ]},
-    options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{size:10},color:tickColor}},
-        y:{min:0,max:100,grid:{color:gridColor},ticks:{font:{size:10},color:tickColor,callback:function(v){return v+'%';},stepSize:25}},
-      }}
-  });
-}
-
-/* ══════════════════════════════════════════
-   TEAM PERFORMANCE PAGE
-══════════════════════════════════════════ */
-var TEAMS = {
-  W:[
-    {name:"Oklahoma City Thunder",abbr:"OKC",wins:60,losses:16,confRank:1,preseasonWins:52,projRank:2,offRtg:118.4,defRtg:108.2,perfScore:91,perfTag:"Exceeding expectations",
-     injuries:[{name:"Chet Holmgren",status:"GTD",dot:"dot-gtd",note:"hip"},{name:"Isaiah Joe",status:"Out",dot:"dot-out",note:"knee"}],
-     playoffRounds:[{yr:"22",label:"1st Rd",h:15},{yr:"23",label:"WCF",h:75},{yr:"24",label:"WCF",h:75},{yr:"25",label:"Finals",h:95}],
-     playoffNote:"Back-to-back WCF appearances. Finals experience in 2025. SGA is elite in the playoffs.",seriesProb:82},
-    {name:"San Antonio Spurs",abbr:"SAS",wins:57,losses:18,confRank:2,preseasonWins:38,projRank:8,offRtg:116.1,defRtg:109.4,perfScore:97,perfTag:"Massively exceeded",
-     injuries:[{name:"Keldon Johnson",status:"Out",dot:"dot-out",note:"wrist"}],
-     playoffRounds:[{yr:"22",label:"Lottery",h:0},{yr:"23",label:"Lottery",h:0},{yr:"24",label:"Lottery",h:0},{yr:"25",label:"1st Rd",h:15}],
-     playoffNote:"League's biggest surprise. Wembanyama's first deep run. Young team with sky-high ceiling.",seriesProb:71},
-    {name:"Los Angeles Lakers",abbr:"LAL",wins:49,losses:26,confRank:4,preseasonWins:47,projRank:5,offRtg:115.8,defRtg:111.2,perfScore:68,perfTag:"On track",
-     injuries:[{name:"LeBron James",status:"Prob.",dot:"dot-ok",note:"ankle mgmt"},{name:"Jarred Vanderbilt",status:"Out",dot:"dot-out",note:"foot"}],
-     playoffRounds:[{yr:"22",label:"Miss",h:0},{yr:"23",label:"WCF",h:75},{yr:"24",label:"1st Rd",h:15},{yr:"25",label:"2nd Rd",h:40}],
-     playoffNote:"AD is the key. When healthy and motivated, elite. LeBron's age a factor in long series.",seriesProb:62},
-    {name:"Denver Nuggets",abbr:"DEN",wins:48,losses:28,confRank:3,preseasonWins:52,projRank:1,offRtg:117.2,defRtg:112.8,perfScore:55,perfTag:"Slightly underperforming",
-     injuries:[{name:"Nikola Jokic",status:"Healthy",dot:"dot-ok",note:""},{name:"Jamal Murray",status:"GTD",dot:"dot-gtd",note:"hamstring"}],
-     playoffRounds:[{yr:"22",label:"2nd Rd",h:40},{yr:"23",label:"Champs",h:100},{yr:"24",label:"1st Rd",h:15},{yr:"25",label:"2nd Rd",h:40}],
-     playoffNote:"Jokic is the best player on Earth. Murray health is everything — Denver is 0-4 in series without him.",seriesProb:74},
-    {name:"Minnesota Timberwolves",abbr:"MIN",wins:46,losses:29,confRank:5,preseasonWins:48,projRank:3,offRtg:113.4,defRtg:109.8,perfScore:52,perfTag:"Slightly under",
-     injuries:[{name:"Julius Randle",status:"GTD",dot:"dot-gtd",note:"shoulder"},{name:"Rudy Gobert",status:"Healthy",dot:"dot-ok",note:""}],
-     playoffRounds:[{yr:"22",label:"1st Rd",h:15},{yr:"23",label:"2nd Rd",h:40},{yr:"24",label:"WCF",h:75},{yr:"25",label:"2nd Rd",h:40}],
-     playoffNote:"Elite defensive identity. Edwards must carry the offense. KAT departure still a lingering issue.",seriesProb:58},
-    {name:"Houston Rockets",abbr:"HOU",wins:45,losses:29,confRank:6,preseasonWins:36,projRank:9,offRtg:114.2,defRtg:110.6,perfScore:88,perfTag:"Exceeding expectations",
-     injuries:[{name:"Kevin Durant",status:"Healthy",dot:"dot-ok",note:""},{name:"Alperen Sengun",status:"Healthy",dot:"dot-ok",note:""}],
-     playoffRounds:[{yr:"22",label:"Lottery",h:0},{yr:"23",label:"Lottery",h:0},{yr:"24",label:"Lottery",h:0},{yr:"25",label:"1st Rd",h:15}],
-     playoffNote:"KD acquisition changed everything. Young core has never felt this kind of playoff pressure.",seriesProb:55},
-    {name:"LA Clippers",abbr:"LAC",wins:39,losses:36,confRank:7,preseasonWins:41,projRank:6,offRtg:112.8,defRtg:113.2,perfScore:44,perfTag:"Underperforming",
-     injuries:[{name:"Kawhi Leonard",status:"Out",dot:"dot-out",note:"knee (season)"},{name:"James Harden",status:"GTD",dot:"dot-gtd",note:"hamstring"}],
-     playoffRounds:[{yr:"22",label:"Miss",h:0},{yr:"23",label:"1st Rd",h:15},{yr:"24",label:"Miss",h:0},{yr:"25",label:"Play-in",h:8}],
-     playoffNote:"Kawhi's annual injury saga defines this franchise. Play-in survival is the realistic ceiling.",seriesProb:28},
-    {name:"Portland Trail Blazers",abbr:"POR",wins:38,losses:38,confRank:8,preseasonWins:30,projRank:12,offRtg:111.4,defRtg:114.8,perfScore:79,perfTag:"Exceeded expectations",
-     injuries:[{name:"Anfernee Simons",status:"GTD",dot:"dot-gtd",note:"ankle"},{name:"Scoot Henderson",status:"Healthy",dot:"dot-ok",note:""}],
-     playoffRounds:[{yr:"22",label:"Miss",h:0},{yr:"23",label:"Lottery",h:0},{yr:"24",label:"Lottery",h:0},{yr:"25",label:"Lottery",h:0}],
-     playoffNote:"Overachievers. Scoot Henderson's development is a bright spot. Play-in ceiling.",seriesProb:22},
-  ],
-  E:[
-    {name:"Detroit Pistons",abbr:"DET",wins:54,losses:21,confRank:1,preseasonWins:34,projRank:10,offRtg:116.8,defRtg:108.6,perfScore:99,perfTag:"Biggest surprise in the league",
-     injuries:[{name:"Cade Cunningham",status:"Healthy",dot:"dot-ok",note:""},{name:"Jalen Duren",status:"Healthy",dot:"dot-ok",note:""}],
-     playoffRounds:[{yr:"22",label:"Lottery",h:0},{yr:"23",label:"Lottery",h:0},{yr:"24",label:"Lottery",h:0},{yr:"25",label:"1st Rd",h:15}],
-     playoffNote:"The league's biggest story. No deep playoff experience. Cade is legit — can they handle the pressure?",seriesProb:65},
-    {name:"Boston Celtics",abbr:"BOS",wins:50,losses:25,confRank:3,preseasonWins:54,projRank:1,offRtg:119.2,defRtg:110.4,perfScore:58,perfTag:"Slight underperformance",
-     injuries:[{name:"Jaylen Brown",status:"GTD",dot:"dot-gtd",note:"knee"},{name:"Kristaps Porzingis",status:"Out",dot:"dot-out",note:"calf (season)"}],
-     playoffRounds:[{yr:"22",label:"Finals",h:95},{yr:"23",label:"2nd Rd",h:40},{yr:"24",label:"Champs",h:100},{yr:"25",label:"ECF",h:75}],
-     playoffNote:"Defending champions. Tatum/Brown at their peak. KP loss hurts. Most battle-tested roster in the East.",seriesProb:78},
-    {name:"New York Knicks",abbr:"NYK",wins:48,losses:27,confRank:4,preseasonWins:44,projRank:4,offRtg:115.6,defRtg:111.8,perfScore:72,perfTag:"Exceeding expectations",
-     injuries:[{name:"OG Anunoby",status:"GTD",dot:"dot-gtd",note:"hamstring"},{name:"Mitchell Robinson",status:"Out",dot:"dot-out",note:"ankle"}],
-     playoffRounds:[{yr:"22",label:"Miss",h:0},{yr:"23",label:"2nd Rd",h:40},{yr:"24",label:"2nd Rd",h:40},{yr:"25",label:"ECF",h:75}],
-     playoffNote:"Brunson is a playoff monster. KAT makes them legitimate contenders. MSG in May is electric.",seriesProb:69},
-    {name:"Cleveland Cavaliers",abbr:"CLE",wins:47,losses:28,confRank:2,preseasonWins:45,projRank:3,offRtg:114.4,defRtg:109.2,perfScore:64,perfTag:"On track",
-     injuries:[{name:"Donovan Mitchell",status:"Healthy",dot:"dot-ok",note:""},{name:"Evan Mobley",status:"Healthy",dot:"dot-ok",note:""}],
-     playoffRounds:[{yr:"22",label:"2nd Rd",h:40},{yr:"23",label:"1st Rd",h:15},{yr:"24",label:"2nd Rd",h:40},{yr:"25",label:"2nd Rd",h:40}],
-     playoffNote:"Consistent but unproven beyond the 2nd round. Mobley development is the key variable.",seriesProb:66},
-    {name:"Toronto Raptors",abbr:"TOR",wins:42,losses:32,confRank:5,preseasonWins:33,projRank:11,offRtg:112.6,defRtg:112.4,perfScore:82,perfTag:"Exceeded expectations",
-     injuries:[{name:"Scottie Barnes",status:"Healthy",dot:"dot-ok",note:""},{name:"RJ Barrett",status:"GTD",dot:"dot-gtd",note:"back"}],
-     playoffRounds:[{yr:"22",label:"1st Rd",h:15},{yr:"23",label:"1st Rd",h:15},{yr:"24",label:"Miss",h:0},{yr:"25",label:"1st Rd",h:15}],
-     playoffNote:"Scottie Barnes breakout is real. Tend to underperform when playoff physicality ramps up.",seriesProb:38},
-    {name:"Philadelphia 76ers",abbr:"PHI",wins:41,losses:34,confRank:6,preseasonWins:48,projRank:2,offRtg:113.8,defRtg:113.6,perfScore:22,perfTag:"Major disappointment",
-     injuries:[{name:"Joel Embiid",status:"Out",dot:"dot-out",note:"knee (season)"},{name:"Paul George",status:"GTD",dot:"dot-gtd",note:"knee"}],
-     playoffRounds:[{yr:"22",label:"2nd Rd",h:40},{yr:"23",label:"2nd Rd",h:40},{yr:"24",label:"2nd Rd",h:40},{yr:"25",label:"1st Rd",h:15}],
-     playoffNote:"Embiid out for the season is catastrophic. Maxi Tyson carrying everything. Pure survival mode.",seriesProb:32},
-    {name:"Atlanta Hawks",abbr:"ATL",wins:43,losses:33,confRank:7,preseasonWins:39,projRank:7,offRtg:114.2,defRtg:114.6,perfScore:61,perfTag:"Slightly exceeded",
-     injuries:[{name:"Trae Young",status:"Healthy",dot:"dot-ok",note:""},{name:"De'Andre Hunter",status:"GTD",dot:"dot-gtd",note:"hip"}],
-     playoffRounds:[{yr:"22",label:"2nd Rd",h:40},{yr:"23",label:"1st Rd",h:15},{yr:"24",label:"1st Rd",h:15},{yr:"25",label:"Play-in",h:8}],
-     playoffNote:"Trae is must-watch but historically inconsistent. Hawks underachieve relative to talent.",seriesProb:30},
-    {name:"Orlando Magic",abbr:"ORL",wins:39,losses:35,confRank:8,preseasonWins:36,projRank:9,offRtg:111.2,defRtg:111.8,perfScore:57,perfTag:"Slightly exceeded",
-     injuries:[{name:"Paolo Banchero",status:"Healthy",dot:"dot-ok",note:""},{name:"Franz Wagner",status:"GTD",dot:"dot-gtd",note:"ankle"}],
-     playoffRounds:[{yr:"22",label:"Lottery",h:0},{yr:"23",label:"1st Rd",h:15},{yr:"24",label:"1st Rd",h:15},{yr:"25",label:"1st Rd",h:15}],
-     playoffNote:"Paolo is a budding star. Defense is elite. Franz Wagner health is critical.",seriesProb:28},
-  ]
-};
-
-var BRACKET = {
-  W:[
-    {seed1:1,t1:"OKC",seed2:8,t2:"POR",prob1:82,prob2:18,note:"Shai vs Scoot — generational talent on both sides"},
-    {seed1:2,t1:"SAS",seed2:7,t2:"LAC",prob1:71,prob2:29,note:"Wembanyama's coming-out party"},
-    {seed1:3,t1:"DEN",seed2:6,t2:"HOU",prob1:62,prob2:38,note:"Jokic vs KD — series of the round"},
-    {seed1:4,t1:"LAL",seed2:5,t2:"MIN",prob1:55,prob2:45,note:"LeBron vs Edwards — marquee matchup"},
-  ],
-  E:[
-    {seed1:1,t1:"DET",seed2:8,t2:"ORL",prob1:65,prob2:35,note:"Can Detroit handle playoff pressure for the first time?"},
-    {seed1:2,t1:"CLE",seed2:7,t2:"ATL",prob1:70,prob2:30,note:"Mitchell vs Trae — two elite shot-creators"},
-    {seed1:3,t1:"BOS",seed2:6,t2:"PHI",prob1:78,prob2:22,note:"Defending champs vs a broken Sixers squad"},
-    {seed1:4,t1:"NYK",seed2:5,t2:"TOR",prob1:69,prob2:31,note:"Brunson's time to shine — MSG will be electric"},
-  ]
-};
-
-var expandedTeam=null, currentConf='W';
-
-function renderTeams() {
-  var list=TEAMS[currentConf];
-  document.getElementById('teams-container').innerHTML=list.map(function(t){
-    var isExp=expandedTeam===t.abbr;
-    var chip=seedChip(t.confRank);
-    var winD=t.wins-t.preseasonWins; var rankD=t.projRank-t.confRank; var netRtg=(t.offRtg-t.defRtg).toFixed(1);
-    var pc=t.perfScore>=80?{n:'#16a34a',b:'pill-green'}:t.perfScore>=60?{n:'#2563eb',b:'pill-blue'}:t.perfScore>=40?{n:'#d97706',b:'pill-yellow'}:{n:'#dc2626',b:'pill-red'};
-    var expandHtml='';
-    if(isExp){
-      var bars=[
-        {name:'Wins vs Vegas O/U',val:Math.min(100,Math.max(0,50+winD*4)),txt:(winD>=0?'+':'')+winD+'W '+(winD>=0?'above':'below')+' Vegas',col:winD>=0?'#16a34a':'#dc2626'},
-        {name:'Conf. rank vs projection',val:Math.min(100,Math.max(0,50+rankD*8)),txt:rankD>0?'#'+t.confRank+' · '+rankD+' spots better':rankD===0?'On projection':'#'+t.confRank+' · '+Math.abs(rankD)+' spots worse',col:rankD>=0?'#16a34a':'#dc2626'},
-        {name:'Net rating',val:Math.min(100,Math.max(0,50+parseFloat(netRtg)*4)),txt:(parseFloat(netRtg)>=0?'+':'')+netRtg+' net rtg',col:parseFloat(netRtg)>=3?'#16a34a':parseFloat(netRtg)>=0?'#2563eb':'#dc2626'},
-      ];
-      var barsHtml=bars.map(function(b){return '<div class="bar-row"><span class="bar-row-name">'+b.name+'</span><div class="bar-bg"><div class="bar-fill" style="width:'+b.val+'%;background:'+b.col+';"></div></div><span class="bar-val" style="color:'+b.col+';">'+b.txt+'</span></div>';}).join('');
-      var histHtml=t.playoffRounds.map(function(r){var bg=r.h>=90?'#16a34a':r.h>=60?'#2563eb':r.h>=25?'#f59e0b':'#d1d5db';return '<div class="hist-yr"><div class="hist-bar-bg"><div class="hist-bar-fill" style="height:'+r.h+'%;background:'+bg+';border-radius:3px;"></div></div><div class="hist-yr-lbl">\''+r.yr+'</div><div class="hist-result">'+r.label+'</div></div>';}).join('');
-      var injHtml=t.injuries.map(function(i){return '<div class="inj-item"><div class="inj-dot '+i.dot+'"></div><span class="inj-name">'+i.name+'</span><span class="inj-note">'+i.status+(i.note?' · '+i.note:'')+'</span></div>';}).join('');
-      expandHtml='<div class="expand-body open"><div class="expand-section" style="margin-top:0;">Performance vs. expectation</div><div class="bar-list">'+barsHtml+'</div><div class="metrics-3"><div class="met"><div class="met-l">Off. rating</div><div class="met-v">'+t.offRtg+'</div><div class="met-s" style="color:'+(t.offRtg>115?'#16a34a':'#f59e0b')+';">Lg avg 115.2</div></div><div class="met"><div class="met-l">Def. rating</div><div class="met-v">'+t.defRtg+'</div><div class="met-s" style="color:'+(t.defRtg<112?'#16a34a':'#dc2626')+';">Lower is better</div></div><div class="met"><div class="met-l">R1 win prob.</div><div class="met-v">'+t.seriesProb+'%</div><div class="met-s" style="color:var(--text2);">Win R1 series</div></div></div><div class="expand-section">Playoff history — last 4 seasons</div><div class="hist-bars">'+histHtml+'</div><div class="playoff-note">'+t.playoffNote+'</div><div class="expand-section">Injury & roster concerns</div><div class="inj-list">'+injHtml+'</div></div>';
-    }
-    return '<div class="card '+(isExp?'expanded':'')+'" onclick="toggleTeam(\''+t.abbr+'\')"><div class="tcard-header"><div class="team-rank-num">'+t.confRank+'</div><div class="team-info"><div class="team-title">'+t.name+' <span class="pill '+chip.cls+'" style="font-size:10px;padding:2px 7px;">'+chip.label+'</span></div><div class="team-subtitle">'+t.wins+'–'+t.losses+' · Vegas O/U '+t.preseasonWins+'W · Projected #'+t.projRank+'</div></div><div class="perf-block"><span class="perf-label">Perf. score</span><span class="perf-num" style="color:'+pc.n+';">'+t.perfScore+'</span><span class="pill '+pc.b+'" style="font-size:11px;">'+t.perfTag+'</span></div></div>'+expandHtml+'</div>';
+  /* players to watch */
+  var allStars=[];
+  var hS=pw.hStars,aS=pw.aStars;
+  (hS.players||[]).forEach(function(p,i){allStars.push({name:p,ppg:(hS.ppg||[])[i]||0,team:g.home.abbr});});
+  (aS.players||[]).forEach(function(p,i){allStars.push({name:p,ppg:(aS.ppg||[])[i]||0,team:g.away.abbr});});
+  allStars.sort(function(a,b){return b.ppg-a.ppg;});
+  var starRows=allStars.map(function(p){
+    return '<div class="star-row"><span class="star-team">'+p.team+'</span><span class="star-name">'+p.name+'</span><span class="star-avg">'+p.ppg+' ppg</span></div>';
   }).join('');
+
+  /* injury warnings — only show if live roster data has starInjuries */
+  var injHtml='';
+  var hInj=(hS&&hS.starInjuries)||[];
+  var aInj=(aS&&aS.starInjuries)||[];
+  var allInj=hInj.concat(aInj);
+  if(allInj.length>0){
+    var injRows=allInj.map(function(i){
+      var isOut=(i.status||'').toLowerCase()==='out'||(i.status||'').toLowerCase()==='inactive';
+      var isQ=(i.status||'').toLowerCase()==='questionable'||(i.status||'').toLowerCase()==='doubtful';
+      var dotColor=isOut?'#dc2626':isQ?'#f59e0b':'#16a34a';
+      var impact=isOut?'Star missing - score adjusted':isQ?'Questionable - score discounted':'';
+      return '<div class="star-row"><span style="width:8px;height:8px;border-radius:50%;background:'+dotColor+';display:inline-block;flex-shrink:0;margin-right:4px;"></span><span class="star-name">'+i.name+'</span><span class="star-avg" style="color:'+dotColor+';">'+i.status+(i.reason?' - '+i.reason:'')+'</span></div>'+(impact?'<div style="font-size:10px;color:'+dotColor+';padding:2px 0 4px 20px;">'+impact+'</div>':'');
+    }).join('');
+    injHtml='<div class="expand-section">Injury report</div><div class="pregame-stars">'+injRows+'</div>';
+  }
+
+  /* win prob bars */
+  var wpHtml='';
+  if(g.winProb){
+    var hP=g.winProb[g.home.abbr]||50;
+    var aP=g.winProb[g.away.abbr]||(100-hP);
+    wpHtml='<div class="expand-section">Vegas win probability</div>'+
+      '<div class="win-prob-row"><span class="win-prob-team">'+g.home.abbr+'</span><div class="win-prob-bar-bg"><div class="win-prob-bar" style="width:'+hP+'%;background:#3b82f6;"></div></div><span class="win-prob-pct">'+hP+'%</span></div>'+
+      '<div class="win-prob-row"><span class="win-prob-team">'+g.away.abbr+'</span><div class="win-prob-bar-bg"><div class="win-prob-bar" style="width:'+aP+'%;background:#f97316;"></div></div><span class="win-prob-pct">'+aP+'%</span></div>';
+  }
+
+  expandHtml='<div class="expand-body open">'+
+    '<div class="algo-note">Pregame weights: <strong>star power</strong> 30% · <strong>playoff stakes</strong> 28% · matchup quality 22% · win prob. tightness 20%<br>Stakes: '+pw.stakes.reason+' ('+pw.stakes.score+'/100)</div>'+
+    '<div class="standings-strip">'+standHtml(g.home.abbr,g.away.abbr,g.home.name,g.away.name)+'</div>'+
+    '<div class="expand-section">Score factors</div>'+
+    '<div class="factors-grid">'+fcHtml+'</div>'+
+    '<div class="expand-section">Players to watch</div>'+
+    '<div style="background:var(--bg2);border-radius:var(--radius-sm);padding:8px 10px;margin-bottom:12px;">'+starRows+'</div>'+
+    injHtml+
+    wpHtml+
+    '<div class="verdict" style="'+verdictStyle(pw.total)+'">'+pregameVerdictTxt(pw.total)+'</div>'+
+    '</div>';
+}
+
+return '<div class="card '+(isExp?'expanded':'')+'" onclick="toggleGame(\''+g.id+'\')">'+
+  '<div class="card-header">'+statusPill+
+  '<div class="matchup"><div class="team-blk"><span class="team-abbr">'+g.away.abbr+'</span></div>'+
+  '<span class="at-sep">@</span>'+
+  '<div class="team-blk"><span class="team-abbr">'+g.home.abbr+'</span></div>'+
+  stakesBadge+'</div>'+wsHtml+'</div>'+expandHtml+'</div>';
+```
+
+}
+
+/* ── LIVE / FINAL ── */
+var ws=calcWatchability(g);
+var gp=getElapsedPct(g.quarter||1,g.clock);
+var stakes=calcStakes(g.home.abbr,g.away.abbr);
+var stakesBadge=stakes.score>=45?’<span class="stakes-pill '+stakes.cls+'">’+stakes.label+’</span>’:’’;
+var broadcastBadge=g.broadcasts&&g.broadcasts.length?’<span class="broadcast">’+g.broadcasts[0]+’</span>’:’’;
+var statusPill=g.status===‘inprogress’
+?’<span class="pill pill-live"><span class="live-dot" style="width:6px;height:6px;display:inline-block;vertical-align:middle;margin-right:4px;"></span>Q’+g.quarter+’ ‘+g.clock+’</span>’
+:’<span class="pill pill-final">Final</span>’;
+var homeLeading=(g.home.score||0)>(g.away.score||0);
+var hScoreHtml=g.home.score!=null?’<span class="team-score '+(homeLeading?'leading':'trailing')+'">’+g.home.score+’</span>’:’’;
+var aScoreHtml=g.away.score!=null?’<span class="team-score '+(!homeLeading?'leading':'trailing')+'">’+g.away.score+’</span>’:’’;
+var wsHtml=ws
+?’<div class="ws-block"><span class="ws-label">Watchability</span><span class="ws-num '+wsClass(ws.total)+'">’+ws.total+’</span><span class="pill '+wsBadgeCls(ws.total)+'" style="font-size:11px;">’+wsBadgeTxt(ws.total)+’</span></div>’
+:’<div class="ws-block"><span class="ws-label">Final</span></div>’;
+
+var expandHtml=’’;
+if(isExp&&ws){
+var periodHtml=’’;
+if(g.periodScores&&g.periodScores.length){
+var cols=g.periodScores.map(function(p){return ‘<div class="period-col"><div class="period-hdr">Q’+p.period+’</div><div class="period-score away">’+p.away+’</div><div class="period-score home">’+p.home+’</div></div>’;}).join(’’);
+periodHtml=’<div class="expand-section">Quarter scores - ‘+g.away.abbr+’ / ‘+g.home.abbr+’</div><div class="period-scores">’+cols+’<div class="period-col"><div class="period-hdr">TOT</div><div class="period-score away" style="font-weight:700;">’+(g.away.score||0)+’</div><div class="period-score home" style="font-weight:700;">’+(g.home.score||0)+’</div></div></div>’;
+}
+var leadersHtml=’’;
+if(g.leaders&&((g.leaders.home&&g.leaders.home.length)||(g.leaders.away&&g.leaders.away.length))){
+var rtp=function(players,label){
+if(!players||!players.length) return ‘’;
+var rows=players.map(function(p){var fg=(p.fgm!==undefined&&p.fga!==undefined)?p.fgm+’/’+p.fga:’’;return ‘<div class="player-row"><span class="player-name">’+p.name+’</span><span class="player-stat">’+p.reb+’</span><span class="player-stat">’+p.ast+’</span><span class="player-stat">’+fg+’</span><span class="player-stat pts">’+p.pts+’</span></div>’;}).join(’’);
+return ‘<div class="box-team-col"><div class="box-team-lbl">’+label+’</div><div class="stat-headers"><span class="stat-hdr name">Player</span><span class="stat-hdr">Reb</span><span class="stat-hdr">Ast</span><span class="stat-hdr">FG</span><span class="stat-hdr pts">Pts</span></div>’+rows+’</div>’;
+};
+leadersHtml=’<div class="expand-section">Box score</div><div class="box-row">’+rtp(g.leaders.away,g.away.abbr)+rtp(g.leaders.home,g.home.abbr)+’</div>’;
+}else if(g.status===‘inprogress’||g.status===‘final’){
+leadersHtml=’<div class="expand-section">Box score</div><div class="loading-box">Loading player stats…</div>’;
+}
+var chartId=‘ch-’+g.id;
+expandHtml=’<div class="expand-body open">’+
+‘<div class="algo-note">Weights: <strong>pace</strong> 26% · <strong>stars</strong> 24% · <strong>playoff stakes</strong> 22% · closeness 18% · clutch 10%<br>Stakes: ‘+ws.stakes.reason+’ (’+ws.stakes.score+’/100)</div>’+
+‘<div class="standings-strip">’+standHtml(g.home.abbr,g.away.abbr,g.home.name,g.away.name)+’</div>’+
+periodHtml+
+‘<div class="expand-section">Score factors</div>’+
+‘<div class="factors-grid">’+factorBarsHtml(ws.factors)+’</div>’+
+‘<div class="chart-section"><div class="chart-label">Win probability</div>’+
+‘<div class="chart-legend"><span><span class="legend-line" style="background:#3b82f6;"></span>’+g.home.abbr+’</span><span><span class="legend-line" style="background:#f97316;"></span>’+g.away.abbr+’</span></div>’+
+‘<div class="chart-wrap"><canvas id="'+chartId+'"></canvas></div></div>’+
+leadersHtml+
+‘<div class="verdict" style="'+verdictStyle(ws.total)+'">’+verdictTxt(ws.total)+’</div>’+
+‘</div>’;
+}
+
+return ‘<div class="card '+(isExp?'expanded':'')+'" onclick="toggleGame(\''+g.id+'\')">’+
+‘<div class="card-header">’+statusPill+
+‘<div class="matchup"><div class="team-blk"><span class="team-abbr">’+g.away.abbr+’</span>’+aScoreHtml+’</div>’+
+‘<span class="at-sep">@</span>’+
+‘<div class="team-blk"><span class="team-abbr">’+g.home.abbr+’</span>’+hScoreHtml+’</div>’+
+stakesBadge+broadcastBadge+’</div>’+wsHtml+’</div>’+expandHtml+’</div>’;
+}
+
+function toggleGame(id){
+expandedGame=expandedGame===id?null:id;
+renderGames();
+if(expandedGame){
+var g=liveGames.find(function(x){return x.id===id;});
+if(g&&(g.status===‘inprogress’||g.status===‘final’)){
+setTimeout(function(){drawWinChart(‘ch-’+id,g);},80);
+fetchBoxScore(id);
+}
+}
+}
+
+function drawWinChart(cid,g){
+var ex=charts[cid];if(ex){ex.destroy();delete charts[cid];}
+var canvas=document.getElementById(cid);if(!canvas)return;
+var gp=getElapsedPct(g.quarter||1,g.clock);
+var margin=(g.home.score||0)-(g.away.score||0);
+var curHome=Math.min(95,Math.max(5,50+margin*3*(gp>0.1?1:0.3)));
+var homeData=[50,Math.round(50+margin*1.5*(gp/2)),Math.round(curHome)];
+var awayData=homeData.map(function(v){return 100-v;});
+var isDark=window.matchMedia(’(prefers-color-scheme:dark)’).matches;
+var gc=isDark?‘rgba(255,255,255,0.07)’:‘rgba(0,0,0,0.05)’;
+var tc=isDark?’#78716c’:’#a8a29e’;
+charts[cid]=new Chart(canvas,{
+type:‘line’,
+data:{labels:[‘Start’,‘Mid’,‘Now’],datasets:[
+{label:g.home.abbr,data:homeData,borderColor:’#3b82f6’,borderWidth:2,pointRadius:3,pointBackgroundColor:’#3b82f6’,tension:0.4,fill:false},
+{label:g.away.abbr,data:awayData,borderColor:’#f97316’,borderWidth:2,pointRadius:3,pointBackgroundColor:’#f97316’,tension:0.4,fill:false},
+]},
+options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+scales:{x:{grid:{display:false},ticks:{font:{size:10},color:tc}},y:{min:0,max:100,grid:{color:gc},ticks:{font:{size:10},color:tc,callback:function(v){return v+’%’;},stepSize:25}}}}
+});
+}
+
+/* ── TEAM PERFORMANCE ── */
+var TEAMS={
+W:[
+{name:“Oklahoma City Thunder”,abbr:“OKC”,wins:60,losses:16,confRank:1,preseasonWins:52,projRank:2,offRtg:118.4,defRtg:108.2,perfScore:91,perfTag:“Exceeding expectations”,
+injuries:[{name:“Chet Holmgren”,status:“GTD”,dot:“dot-gtd”,note:“hip”},{name:“Isaiah Joe”,status:“Out”,dot:“dot-out”,note:“knee”}],
+playoffRounds:[{yr:“22”,label:“1st Rd”,h:15},{yr:“23”,label:“WCF”,h:75},{yr:“24”,label:“WCF”,h:75},{yr:“25”,label:“Finals”,h:95}],
+playoffNote:“Back-to-back WCF appearances. Finals experience in 2025. SGA is elite in the playoffs.”,seriesProb:82},
+{name:“San Antonio Spurs”,abbr:“SAS”,wins:57,losses:18,confRank:2,preseasonWins:38,projRank:8,offRtg:116.1,defRtg:109.4,perfScore:97,perfTag:“Massively exceeded”,
+injuries:[{name:“Keldon Johnson”,status:“Out”,dot:“dot-out”,note:“wrist”}],
+playoffRounds:[{yr:“22”,label:“Lottery”,h:0},{yr:“23”,label:“Lottery”,h:0},{yr:“24”,label:“Lottery”,h:0},{yr:“25”,label:“1st Rd”,h:15}],
+playoffNote:“The league’s biggest surprise. Wembanyama’s first deep run. Young team with a sky-high ceiling.”,seriesProb:71},
+{name:“Los Angeles Lakers”,abbr:“LAL”,wins:49,losses:26,confRank:4,preseasonWins:47,projRank:5,offRtg:115.8,defRtg:111.2,perfScore:68,perfTag:“On track”,
+injuries:[{name:“LeBron James”,status:“Prob.”,dot:“dot-ok”,note:“ankle mgmt”}],
+playoffRounds:[{yr:“22”,label:“Miss”,h:0},{yr:“23”,label:“WCF”,h:75},{yr:“24”,label:“1st Rd”,h:15},{yr:“25”,label:“2nd Rd”,h:40}],
+playoffNote:“LeBron still elite. Austin Reaves has become a legitimate co-star. Luka and AD now in Dallas.”,seriesProb:62},
+{name:“Denver Nuggets”,abbr:“DEN”,wins:48,losses:28,confRank:3,preseasonWins:52,projRank:1,offRtg:117.2,defRtg:112.8,perfScore:55,perfTag:“Slightly underperforming”,
+injuries:[{name:“Nikola Jokic”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Jamal Murray”,status:“GTD”,dot:“dot-gtd”,note:“hamstring”}],
+playoffRounds:[{yr:“22”,label:“2nd Rd”,h:40},{yr:“23”,label:“Champs”,h:100},{yr:“24”,label:“1st Rd”,h:15},{yr:“25”,label:“2nd Rd”,h:40}],
+playoffNote:“Jokic is the best player on Earth. Murray health is everything — Denver is 0-4 in series without him.”,seriesProb:74},
+{name:“Minnesota Timberwolves”,abbr:“MIN”,wins:46,losses:29,confRank:5,preseasonWins:48,projRank:3,offRtg:113.4,defRtg:109.8,perfScore:52,perfTag:“Slightly under”,
+injuries:[{name:“Julius Randle”,status:“GTD”,dot:“dot-gtd”,note:“shoulder”},{name:“Rudy Gobert”,status:“Healthy”,dot:“dot-ok”,note:””}],
+playoffRounds:[{yr:“22”,label:“1st Rd”,h:15},{yr:“23”,label:“2nd Rd”,h:40},{yr:“24”,label:“WCF”,h:75},{yr:“25”,label:“2nd Rd”,h:40}],
+playoffNote:“Elite defensive identity. Edwards must carry the offense. KAT departure still a lingering issue.”,seriesProb:58},
+{name:“Houston Rockets”,abbr:“HOU”,wins:45,losses:29,confRank:6,preseasonWins:36,projRank:9,offRtg:114.2,defRtg:110.6,perfScore:88,perfTag:“Exceeding expectations”,
+injuries:[{name:“Kevin Durant”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Alperen Sengun”,status:“Healthy”,dot:“dot-ok”,note:””}],
+playoffRounds:[{yr:“22”,label:“Lottery”,h:0},{yr:“23”,label:“Lottery”,h:0},{yr:“24”,label:“Lottery”,h:0},{yr:“25”,label:“1st Rd”,h:15}],
+playoffNote:“KD acquisition changed everything. Young core has never felt this kind of playoff pressure.”,seriesProb:55},
+{name:“LA Clippers”,abbr:“LAC”,wins:39,losses:36,confRank:7,preseasonWins:41,projRank:6,offRtg:112.8,defRtg:113.2,perfScore:44,perfTag:“Underperforming”,
+injuries:[{name:“Kawhi Leonard”,status:“Out”,dot:“dot-out”,note:“knee (season)”},{name:“James Harden”,status:“GTD”,dot:“dot-gtd”,note:“hamstring”}],
+playoffRounds:[{yr:“22”,label:“Miss”,h:0},{yr:“23”,label:“1st Rd”,h:15},{yr:“24”,label:“Miss”,h:0},{yr:“25”,label:“Play-in”,h:8}],
+playoffNote:“Kawhi’s annual injury saga defines this franchise. Play-in survival is the realistic ceiling.”,seriesProb:28},
+{name:“Portland Trail Blazers”,abbr:“POR”,wins:38,losses:38,confRank:8,preseasonWins:30,projRank:12,offRtg:111.4,defRtg:114.8,perfScore:79,perfTag:“Exceeded expectations”,
+injuries:[{name:“Anfernee Simons”,status:“GTD”,dot:“dot-gtd”,note:“ankle”},{name:“Scoot Henderson”,status:“Healthy”,dot:“dot-ok”,note:””}],
+playoffRounds:[{yr:“22”,label:“Miss”,h:0},{yr:“23”,label:“Lottery”,h:0},{yr:“24”,label:“Lottery”,h:0},{yr:“25”,label:“Lottery”,h:0}],
+playoffNote:“Overachievers. Scoot Henderson’s development is a bright spot. Play-in ceiling.”,seriesProb:22},
+],
+E:[
+{name:“Detroit Pistons”,abbr:“DET”,wins:54,losses:21,confRank:1,preseasonWins:34,projRank:10,offRtg:116.8,defRtg:108.6,perfScore:99,perfTag:“Biggest surprise in the league”,
+injuries:[{name:“Cade Cunningham”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Jalen Duren”,status:“Healthy”,dot:“dot-ok”,note:””}],
+playoffRounds:[{yr:“22”,label:“Lottery”,h:0},{yr:“23”,label:“Lottery”,h:0},{yr:“24”,label:“Lottery”,h:0},{yr:“25”,label:“1st Rd”,h:15}],
+playoffNote:“The league’s biggest story. No deep playoff experience. Cade is legit — can they handle the pressure?”,seriesProb:65},
+{name:“Boston Celtics”,abbr:“BOS”,wins:50,losses:25,confRank:3,preseasonWins:54,projRank:1,offRtg:119.2,defRtg:110.4,perfScore:58,perfTag:“Slight underperformance”,
+injuries:[{name:“Jaylen Brown”,status:“GTD”,dot:“dot-gtd”,note:“knee”},{name:“Kristaps Porzingis”,status:“Out”,dot:“dot-out”,note:“calf (season)”}],
+playoffRounds:[{yr:“22”,label:“Finals”,h:95},{yr:“23”,label:“2nd Rd”,h:40},{yr:“24”,label:“Champs”,h:100},{yr:“25”,label:“ECF”,h:75}],
+playoffNote:“Defending champions. Tatum/Brown at their peak. KP loss hurts. Most battle-tested roster in the East.”,seriesProb:78},
+{name:“New York Knicks”,abbr:“NYK”,wins:48,losses:27,confRank:4,preseasonWins:44,projRank:4,offRtg:115.6,defRtg:111.8,perfScore:72,perfTag:“Exceeding expectations”,
+injuries:[{name:“OG Anunoby”,status:“GTD”,dot:“dot-gtd”,note:“hamstring”},{name:“Mitchell Robinson”,status:“Out”,dot:“dot-out”,note:“ankle”}],
+playoffRounds:[{yr:“22”,label:“Miss”,h:0},{yr:“23”,label:“2nd Rd”,h:40},{yr:“24”,label:“2nd Rd”,h:40},{yr:“25”,label:“ECF”,h:75}],
+playoffNote:“Brunson is a playoff monster. KAT makes them legitimate contenders. MSG in May is electric.”,seriesProb:69},
+{name:“Cleveland Cavaliers”,abbr:“CLE”,wins:47,losses:28,confRank:2,preseasonWins:45,projRank:3,offRtg:114.4,defRtg:109.2,perfScore:64,perfTag:“On track”,
+injuries:[{name:“Donovan Mitchell”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Evan Mobley”,status:“Healthy”,dot:“dot-ok”,note:””}],
+playoffRounds:[{yr:“22”,label:“2nd Rd”,h:40},{yr:“23”,label:“1st Rd”,h:15},{yr:“24”,label:“2nd Rd”,h:40},{yr:“25”,label:“2nd Rd”,h:40}],
+playoffNote:“Consistent but unproven beyond the 2nd round. Mobley development is the key variable.”,seriesProb:66},
+{name:“Toronto Raptors”,abbr:“TOR”,wins:42,losses:32,confRank:5,preseasonWins:33,projRank:11,offRtg:112.6,defRtg:112.4,perfScore:82,perfTag:“Exceeded expectations”,
+injuries:[{name:“Scottie Barnes”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“RJ Barrett”,status:“GTD”,dot:“dot-gtd”,note:“back”}],
+playoffRounds:[{yr:“22”,label:“1st Rd”,h:15},{yr:“23”,label:“1st Rd”,h:15},{yr:“24”,label:“Miss”,h:0},{yr:“25”,label:“1st Rd”,h:15}],
+playoffNote:“Scottie Barnes breakout is real. Tend to underperform when playoff physicality ramps up.”,seriesProb:38},
+{name:“Philadelphia 76ers”,abbr:“PHI”,wins:41,losses:34,confRank:6,preseasonWins:48,projRank:2,offRtg:113.8,defRtg:113.6,perfScore:22,perfTag:“Major disappointment”,
+injuries:[{name:“Joel Embiid”,status:“Out”,dot:“dot-out”,note:“knee (season)”},{name:“Paul George”,status:“GTD”,dot:“dot-gtd”,note:“knee”}],
+playoffRounds:[{yr:“22”,label:“2nd Rd”,h:40},{yr:“23”,label:“2nd Rd”,h:40},{yr:“24”,label:“2nd Rd”,h:40},{yr:“25”,label:“1st Rd”,h:15}],
+playoffNote:“Embiid out for the season is catastrophic. Maxey carrying everything. Pure survival mode.”,seriesProb:32},
+{name:“Atlanta Hawks”,abbr:“ATL”,wins:43,losses:33,confRank:7,preseasonWins:39,projRank:7,offRtg:114.2,defRtg:114.6,perfScore:61,perfTag:“Slightly exceeded”,
+injuries:[{name:“Trae Young”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“De’Andre Hunter”,status:“GTD”,dot:“dot-gtd”,note:“hip”}],
+playoffRounds:[{yr:“22”,label:“2nd Rd”,h:40},{yr:“23”,label:“1st Rd”,h:15},{yr:“24”,label:“1st Rd”,h:15},{yr:“25”,label:“Play-in”,h:8}],
+playoffNote:“Trae is must-watch but historically inconsistent. Hawks underachieve relative to talent.”,seriesProb:30},
+{name:“Orlando Magic”,abbr:“ORL”,wins:39,losses:35,confRank:8,preseasonWins:36,projRank:9,offRtg:111.2,defRtg:111.8,perfScore:57,perfTag:“Slightly exceeded”,
+injuries:[{name:“Paolo Banchero”,status:“Healthy”,dot:“dot-ok”,note:””},{name:“Franz Wagner”,status:“GTD”,dot:“dot-gtd”,note:“ankle”}],
+playoffRounds:[{yr:“22”,label:“Lottery”,h:0},{yr:“23”,label:“1st Rd”,h:15},{yr:“24”,label:“1st Rd”,h:15},{yr:“25”,label:“1st Rd”,h:15}],
+playoffNote:“Paolo is a budding star. Defense is elite. Franz Wagner health is critical.”,seriesProb:28},
+]
+};
+
+var BRACKET={
+W:[
+{seed1:1,t1:“OKC”,seed2:8,t2:“POR”,prob1:82,prob2:18,note:“Shai vs Scoot — generational talent on both sides”},
+{seed1:2,t1:“SAS”,seed2:7,t2:“LAC”,prob1:71,prob2:29,note:“Wembanyama’s coming-out party”},
+{seed1:3,t1:“DEN”,seed2:6,t2:“HOU”,prob1:62,prob2:38,note:“Jokic vs KD — series of the round”},
+{seed1:4,t1:“LAL”,seed2:5,t2:“MIN”,prob1:55,prob2:45,note:“LeBron vs Edwards — marquee matchup”},
+],
+E:[
+{seed1:1,t1:“DET”,seed2:8,t2:“ORL”,prob1:65,prob2:35,note:“Can Detroit handle playoff pressure for the first time?”},
+{seed1:2,t1:“CLE”,seed2:7,t2:“ATL”,prob1:70,prob2:30,note:“Mitchell vs Trae — two elite shot-creators”},
+{seed1:3,t1:“BOS”,seed2:6,t2:“PHI”,prob1:78,prob2:22,note:“Defending champs vs a broken Sixers squad”},
+{seed1:4,t1:“NYK”,seed2:5,t2:“TOR”,prob1:69,prob2:31,note:“Brunson’s time to shine — MSG will be electric”},
+]
+};
+
+function renderTeams(){
+var list=TEAMS[currentConf];
+document.getElementById(‘teams-container’).innerHTML=list.map(function(t){
+var isExp=expandedTeam===t.abbr;
+var chip=seedChip(t.confRank);
+var winD=t.wins-t.preseasonWins,rankD=t.projRank-t.confRank,netRtg=(t.offRtg-t.defRtg).toFixed(1);
+var pc=t.perfScore>=80?{n:’#16a34a’,b:‘pill-green’}:t.perfScore>=60?{n:’#2563eb’,b:‘pill-blue’}:t.perfScore>=40?{n:’#d97706’,b:‘pill-yellow’}:{n:’#dc2626’,b:‘pill-red’};
+var expandHtml=’’;
+if(isExp){
+var bars=[
+{name:‘Wins vs Vegas O/U’,val:Math.min(100,Math.max(0,50+winD*4)),txt:(winD>=0?’+’:’’)+winD+‘W ‘+(winD>=0?‘above’:‘below’)+’ Vegas’,col:winD>=0?’#16a34a’:’#dc2626’},
+{name:‘Conf. rank vs projection’,val:Math.min(100,Math.max(0,50+rankD*8)),txt:rankD>0?’#’+t.confRank+’ - ‘+rankD+’ spots better’:rankD===0?‘On projection’:’#’+t.confRank+’ - ‘+Math.abs(rankD)+’ spots worse’,col:rankD>=0?’#16a34a’:’#dc2626’},
+{name:‘Net rating’,val:Math.min(100,Math.max(0,50+parseFloat(netRtg)*4)),txt:(parseFloat(netRtg)>=0?’+’:’’)+netRtg+’ net rtg’,col:parseFloat(netRtg)>=3?’#16a34a’:parseFloat(netRtg)>=0?’#2563eb’:’#dc2626’},
+];
+var barsHtml=bars.map(function(b){return ‘<div class="bar-row"><span class="bar-row-name">’+b.name+’</span><div class="bar-bg"><div class="bar-fill" style="width:'+b.val+'%;background:'+b.col+';"></div></div><span class="bar-val" style="color:'+b.col+';">’+b.txt+’</span></div>’;}).join(’’);
+var histHtml=t.playoffRounds.map(function(r){var bg=r.h>=90?’#16a34a’:r.h>=60?’#2563eb’:r.h>=25?’#f59e0b’:’#d1d5db’;return ‘<div class="hist-yr"><div class="hist-bar-bg"><div class="hist-bar-fill" style="height:'+r.h+'%;background:'+bg+';border-radius:3px;"></div></div><div class="hist-yr-lbl">'’+r.yr+’</div><div class="hist-result">’+r.label+’</div></div>’;}).join(’’);
+var injHtml=t.injuries.map(function(i){return ‘<div class="inj-item"><div class="inj-dot '+i.dot+'"></div><span class="inj-name">’+i.name+’</span><span class="inj-note">’+i.status+(i.note?’ - ‘+i.note:’’)+’</span></div>’;}).join(’’);
+expandHtml=’<div class="expand-body open"><div class="expand-section" style="margin-top:0;">Performance vs. expectation</div><div class="bar-list">’+barsHtml+’</div><div class="metrics-3"><div class="met"><div class="met-l">Off. rating</div><div class="met-v">’+t.offRtg+’</div><div class="met-s" style="color:'+(t.offRtg>115?'#16a34a':'#f59e0b')+';">Lg avg 115.2</div></div><div class="met"><div class="met-l">Def. rating</div><div class="met-v">’+t.defRtg+’</div><div class="met-s" style="color:'+(t.defRtg<112?'#16a34a':'#dc2626')+';">Lower is better</div></div><div class="met"><div class="met-l">R1 win prob.</div><div class="met-v">’+t.seriesProb+’%</div><div class="met-s" style="color:var(--text2);">Win R1 series</div></div></div><div class="expand-section">Playoff history - last 4 seasons</div><div class="hist-bars">’+histHtml+’</div><div class="playoff-note">’+t.playoffNote+’</div><div class="expand-section">Injury and roster concerns</div><div class="inj-list">’+injHtml+’</div></div>’;
+}
+return ‘<div class="card '+(isExp?'expanded':'')+'" onclick="toggleTeam(\''+t.abbr+'\')"><div class="tcard-header"><div class="team-rank-num">’+t.confRank+’</div><div class="team-info"><div class="team-title">’+t.name+’ <span class="pill '+chip.cls+'" style="font-size:10px;padding:2px 7px;">’+chip.label+’</span></div><div class="team-subtitle">’+t.wins+’-’+t.losses+’ - Vegas O/U ‘+t.preseasonWins+‘W - Projected #’+t.projRank+’</div></div><div class="perf-block"><span class="perf-label">Perf. score</span><span class="perf-num" style="color:'+pc.n+';">’+t.perfScore+’</span><span class="pill '+pc.b+'" style="font-size:11px;">’+t.perfTag+’</span></div></div>’+expandHtml+’</div>’;
+}).join(’’);
 }
 
 function toggleTeam(abbr){expandedTeam=expandedTeam===abbr?null:abbr;renderTeams();}
 
 function renderBracket(){
-  var names={W:'Western Conference',E:'Eastern Conference'};
-  document.getElementById('bracket-container').innerHTML=Object.keys(BRACKET).map(function(conf){
-    var series=BRACKET[conf];
-    return '<div class="conf-label">'+names[conf]+' — First Round</div><div class="series-grid">'+series.map(function(s){
-      return '<div class="bseries"><div class="bseries-label">First Round</div><div class="bteam"><div class="bteam-left"><span class="bteam-seed-n">'+s.seed1+'</span><span class="bteam-name fav">'+s.t1+'</span></div><span class="bteam-prob" style="color:#16a34a;">'+s.prob1+'%</span></div><div class="bteam"><div class="bteam-left"><span class="bteam-seed-n">'+s.seed2+'</span><span class="bteam-name dog">'+s.t2+'</span></div><span class="bteam-prob" style="color:#dc2626;">'+s.prob2+'%</span></div><div class="bseries-note">'+s.note+'</div></div>';
-    }).join('')+'</div>';
-  }).join('');
+var names={W:‘Western Conference’,E:‘Eastern Conference’};
+document.getElementById(‘bracket-container’).innerHTML=Object.keys(BRACKET).map(function(conf){
+var series=BRACKET[conf];
+return ‘<div class="conf-label">’+names[conf]+’ - First Round</div><div class="series-grid">’+series.map(function(s){
+return ‘<div class="bseries"><div class="bseries-label">First Round</div><div class="bteam"><div class="bteam-left"><span class="bteam-seed-n">’+s.seed1+’</span><span class="bteam-name fav">’+s.t1+’</span></div><span class="bteam-prob" style="color:#16a34a;">’+s.prob1+’%</span></div><div class="bteam"><div class="bteam-left"><span class="bteam-seed-n">’+s.seed2+’</span><span class="bteam-name dog">’+s.t2+’</span></div><span class="bteam-prob" style="color:#dc2626;">’+s.prob2+’%</span></div><div class="bseries-note">’+s.note+’</div></div>’;
+}).join(’’)+’</div>’;
+}).join(’’);
 }
 
-/* ══════════════════════════════════════════
-   NAV
-══════════════════════════════════════════ */
-var currentPage='games';
+/* ── NAV ── */
 function showPage(page,el){
-  currentPage=page;
-  document.querySelectorAll('.nav-tab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active');
-  document.getElementById('page-games').style.display   = page==='games'  ?'block':'none';
-  document.getElementById('page-teams').style.display   = page==='teams'  ?'block':'none';
-  document.getElementById('page-bracket').style.display = page==='bracket'?'block':'none';
-  if(page==='teams')   renderTeams();
-  if(page==='bracket') renderBracket();
+currentPage=page;
+document.querySelectorAll(’.nav-tab’).forEach(function(t){t.classList.remove(‘active’);});
+el.classList.add(‘active’);
+document.getElementById(‘page-games’).style.display=page===‘games’?‘block’:‘none’;
+document.getElementById(‘page-teams’).style.display=page===‘teams’?‘block’:‘none’;
+document.getElementById(‘page-bracket’).style.display=page===‘bracket’?‘block’:‘none’;
+if(page===‘teams’) renderTeams();
+if(page===‘bracket’) renderBracket();
 }
 function showGameTab(tab,el){
-  currentGameTab=tab; expandedGame=null;
-  document.querySelectorAll('#page-games .sub-tab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active'); renderGames();
+currentGameTab=tab;expandedGame=null;
+document.querySelectorAll(’#page-games .sub-tab’).forEach(function(t){t.classList.remove(‘active’);});
+el.classList.add(‘active’);renderGames();
 }
 function showConfTab(conf,el){
-  currentConf=conf; expandedTeam=null;
-  document.querySelectorAll('#page-teams .sub-tab').forEach(function(t){t.classList.remove('active');});
-  el.classList.add('active'); renderTeams();
+currentConf=conf;expandedTeam=null;
+document.querySelectorAll(’#page-teams .sub-tab’).forEach(function(t){t.classList.remove(‘active’);});
+el.classList.add(‘active’);renderTeams();
 }
 
-/* ══════════════════════════════════════════
-   AUTO REFRESH
-══════════════════════════════════════════ */
+/* ── AUTO REFRESH ── */
 var countdown=30;
 setInterval(function(){
-  updateTimestamp(); countdown--;
-  if(countdown<=0){countdown=30; fetchAndRender();}
+updateTimestamp();countdown–;
+if(countdown<=0){countdown=30;fetchAndRender();}
 },1000);
 
 fetchAndRender();
