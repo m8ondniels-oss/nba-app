@@ -198,6 +198,7 @@
     <div>
       <h1><span class="live-dot"></span>NBA Watchability Index</h1>
       <p>Live scores · playoff stakes · team intelligence · 2025–26</p>
+      <p id="roster-status" style="font-size:11px;color:var(--text3);margin-top:2px;"></p>
     </div>
     <div class="header-right">
       <div id="upd-text">Loading live data...</div>
@@ -327,8 +328,10 @@ var TEAM_STARS = {
    matchup quality (22%), win probability tightness (20%)
 ══════════════════════════════════════════ */
 function calcPregameWatchability(homeAbbr, awayAbbr, winProb) {
-  var hStars = TEAM_STARS[homeAbbr] || {rating:65};
-  var aStars = TEAM_STARS[awayAbbr] || {rating:65};
+  // Use live roster data if available, fall back to hardcoded TEAM_STARS
+  var rosterData = liveRosters || TEAM_STARS;
+  var hStars = rosterData[homeAbbr] || TEAM_STARS[homeAbbr] || {rating:65};
+  var aStars = rosterData[awayAbbr] || TEAM_STARS[awayAbbr] || {rating:65};
   var hStand = STANDINGS[ABBR_TO_NAME[homeAbbr]];
   var aStand = STANDINGS[ABBR_TO_NAME[awayAbbr]];
 
@@ -502,6 +505,26 @@ function fmtTime(isoStr) {
    DATA FETCH
 ══════════════════════════════════════════ */
 var liveGames = [], lastFetched = null, isFetching = false;
+var liveRosters = null;  // populated from /api/rosters
+
+async function fetchRosters() {
+  try {
+    var res = await fetch('/api/rosters');
+    var data = await res.json();
+    if (data.success && data.teams) {
+      liveRosters = data.teams;
+      console.log('Rosters loaded. Live injuries:', data.hasLiveInjuries);
+      var statusEl = document.getElementById('roster-status');
+      if (statusEl) {
+        statusEl.textContent = data.hasLiveInjuries
+          ? '✓ Live injury report loaded · star ratings adjusted'
+          : '⚠ Injury report unavailable · using season averages';
+      }
+    }
+  } catch(err) {
+    console.log('Roster fetch failed, using defaults:', err.message);
+  }
+}
 
 async function fetchScores() {
   if(isFetching) return;
@@ -529,6 +552,8 @@ async function fetchScores() {
 }
 
 async function fetchAndRender() {
+  // Fetch rosters once if not yet loaded
+  if (!liveRosters) await fetchRosters();
   await fetchScores();
   if(currentPage==='games') renderGames();
 }
@@ -631,6 +656,20 @@ function renderGameCard(g) {
         return '<div class="star-row"><span class="star-team">'+p.team+'</span><span class="star-name">'+p.name+'</span><span class="star-avg">'+p.ppg+' ppg</span></div>';
       }).join('');
 
+      /* Injury warnings for star players */
+      var injHtml = '';
+      var hInj = hStars.starInjuries || [];
+      var aInj = aStars.starInjuries || [];
+      var allStarInj = hInj.concat(aInj);
+      if (allStarInj.length > 0) {
+        var injRows = allStarInj.map(function(i) {
+          var dot = i.status === 'Out' ? '#dc2626' : i.status === 'Questionable' || i.status === 'Doubtful' ? '#f59e0b' : '#16a34a';
+          var impact = i.status === 'Out' ? '⚠️ Star missing — score adjusted' : i.status === 'Questionable' ? '⚠️ Questionable — score discounted' : '';
+          return '<div class="star-row"><span style="width:8px;height:8px;border-radius:50%;background:'+dot+';display:inline-block;flex-shrink:0;margin-right:4px;"></span><span class="star-name">'+i.name+'</span><span class="star-avg" style="color:'+dot+';">'+i.status+(i.reason?' · '+i.reason:'')+'</span></div>'+(impact?'<div style="font-size:10px;color:#f59e0b;padding:2px 0 4px 20px;">'+impact+'</div>':'');
+        }).join('');
+        injHtml = '<div class="expand-section">⚠️ Injury report</div><div class="pregame-stars">'+injRows+'</div>';
+      }
+
       /* Win probability bars */
       var wpHtml = '';
       if(g.winProb) {
@@ -648,6 +687,7 @@ function renderGameCard(g) {
         '<div class="pregame-factors">'+fcHtml+'</div>'+
         '<div class="expand-section">Players to watch tonight</div>'+
         '<div class="pregame-stars">'+starRowsHtml+'</div>'+
+        injHtml+
         wpHtml+
         '<div class="verdict" style="'+pv.style+'">'+pv.t+'</div>'+
         '</div>';
