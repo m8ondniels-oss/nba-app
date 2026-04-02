@@ -476,14 +476,15 @@ clutch:{val:Math.round(clutch),wt:‘10%’,label:‘Clutch factor’},
 /* – FETCH – */
 async function fetchRosters(){
 try{
-var res=await fetch(’/api/rosters’);
-var data=await res.json();
-if(data.success&&data.teams){
+var timeout=new Promise(function(_,reject){setTimeout(function(){reject(new Error(‘timeout’));},4000);});
+var fetchp=fetch(’/api/rosters’).then(function(r){return r.json();});
+var data=await Promise.race([fetchp,timeout]);
+if(data&&data.success&&data.teams){
 liveRosters=data.teams;
 var el=document.getElementById(‘roster-status’);
 if(el) el.textContent=data.hasLiveInjuries?‘Live injury report loaded’:‘Using season rosters’;
 }
-}catch(err){console.log(‘Roster fetch failed:’,err.message);}
+}catch(err){console.log(‘Roster fetch skipped:’,err.message);}
 }
 
 async function fetchScores(){
