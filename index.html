@@ -5,7 +5,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NBA Glance</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 :root{
@@ -605,14 +604,6 @@ document.getElementById(“tupcoming”).textContent=“Upcoming (”+up+”)”
 document.getElementById(“tfinal”).textContent=“Final (”+fn+”)”;
 hideBanner();
 updateTs();
-if(gameTab===“live”&&lv===0){
-var best=up>0?“upcoming”:fn>0?“final”:“live”;
-if(best!==“live”){
-gameTab=best;
-document.querySelectorAll(”#pg-games .stab”).forEach(function(x){x.classList.remove(“on”);});
-document.getElementById(best===“upcoming”?“tupcoming”:“tfinal”).classList.add(“on”);
-}
-}
 }catch(err){
 showBanner(“error”,“Could not load scores: “+err.message);
 }finally{
@@ -804,6 +795,7 @@ fetchBox(id);
 }
 }
 function drawChart(cid,g){
+if(typeof Chart===“undefined”){return;}
 var ex=charts[cid];
 if(ex){ex.destroy();delete charts[cid];}
 var cv=document.getElementById(cid);
@@ -975,5 +967,6 @@ if(cd<=0){cd=30;fetchAndRender();}
 fetchAndRender();
 
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 </body>
 </html>
