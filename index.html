@@ -679,12 +679,15 @@ var AVGS={
 “Giannis Antetokounmpo”:27.1,“Tyrese Maxey”:25.9
 };
 
+// Playoff histories verified from ESPN/Wikipedia
+// yr = final year of season (e.g. “24” = 2023-24)
+// h: 0=lottery, 8=play-in, 15=1st rd, 40=2nd rd, 75=conf finals, 95=finals, 100=champs
 var TEAMS={
 W:[
 {name:“Oklahoma City Thunder”,abbr:“OKC”,wins:60,losses:16,confRank:1,preW:52,projR:2,offR:118.4,defR:108.2,ps:91,ptag:“Exceeding expectations”,
 inj:[{n:“Chet Holmgren”,s:“GTD”,dc:“dotq”,note:“hip”},{n:“Isaiah Joe”,s:“Out”,dc:“doto”,note:“knee”}],
 pr:[{yr:“22”,l:“1st Rd”,h:15},{yr:“23”,l:“1st Rd”,h:15},{yr:“24”,l:“2nd Rd”,h:40},{yr:“25”,l:“Champs”,h:100}],
-pn:“Back-to-back WCF appearances. Finals in 2025. SGA is the best player in the league right now.”,sp:82},
+pn:“Won it all in 2025. Back-to-back WCF appearances before that. SGA is the best player in the league right now.”,sp:82},
 {name:“San Antonio Spurs”,abbr:“SAS”,wins:57,losses:18,confRank:2,preW:38,projR:8,offR:116.1,defR:109.4,ps:97,ptag:“Massively exceeded”,
 inj:[{n:“Keldon Johnson”,s:“Out”,dc:“doto”,note:“wrist”}],
 pr:[{yr:“22”,l:“Lottery”,h:0},{yr:“23”,l:“Lottery”,h:0},{yr:“24”,l:“Lottery”,h:0},{yr:“25”,l:“1st Rd”,h:15}],
@@ -700,7 +703,7 @@ pn:“Jokic is the best player on Earth. Murray health is everything - Denver is
 {name:“Minnesota Timberwolves”,abbr:“MIN”,wins:46,losses:29,confRank:5,preW:48,projR:3,offR:113.4,defR:109.8,ps:52,ptag:“Slightly under”,
 inj:[{n:“Julius Randle”,s:“GTD”,dc:“dotq”,note:“shoulder”},{n:“Rudy Gobert”,s:“Healthy”,dc:“dotk”,note:””}],
 pr:[{yr:“22”,l:“1st Rd”,h:15},{yr:“23”,l:“2nd Rd”,h:40},{yr:“24”,l:“WCF”,h:75},{yr:“25”,l:“WCF”,h:75}],
-pn:“Elite defensive identity. Edwards must carry the offense. KAT departure still a lingering issue.”,sp:58},
+pn:“Elite defensive identity. Made back-to-back WCFs. Edwards must carry the offense.”,sp:58},
 {name:“Houston Rockets”,abbr:“HOU”,wins:45,losses:29,confRank:6,preW:36,projR:9,offR:114.2,defR:110.6,ps:88,ptag:“Exceeding expectations”,
 inj:[{n:“Kevin Durant”,s:“Healthy”,dc:“dotk”,note:””},{n:“Alperen Sengun”,s:“Healthy”,dc:“dotk”,note:””}],
 pr:[{yr:“22”,l:“Lottery”,h:0},{yr:“23”,l:“Lottery”,h:0},{yr:“24”,l:“Lottery”,h:0},{yr:“25”,l:“1st Rd”,h:15}],
@@ -734,7 +737,7 @@ pn:“Consistent but unproven beyond the 2nd round. Mobley development is the ke
 {name:“Toronto Raptors”,abbr:“TOR”,wins:42,losses:32,confRank:5,preW:33,projR:11,offR:112.6,defR:112.4,ps:82,ptag:“Exceeded expectations”,
 inj:[{n:“Scottie Barnes”,s:“Healthy”,dc:“dotk”,note:””},{n:“RJ Barrett”,s:“GTD”,dc:“dotq”,note:“back”}],
 pr:[{yr:“22”,l:“1st Rd”,h:15},{yr:“23”,l:“Play-in”,h:8},{yr:“24”,l:“Lottery”,h:0},{yr:“25”,l:“Lottery”,h:0}],
-pn:“Scottie Barnes breakout is real. Tend to underperform when playoff physicality ramps up.”,sp:38},
+pn:“Scottie Barnes breakout is real. Missed playoffs last two years. Tend to underperform when playoff physicality ramps up.”,sp:38},
 {name:“Philadelphia 76ers”,abbr:“PHI”,wins:41,losses:34,confRank:6,preW:48,projR:2,offR:113.8,defR:113.6,ps:22,ptag:“Major disappointment”,
 inj:[{n:“Joel Embiid”,s:“Out”,dc:“doto”,note:“knee (season)”},{n:“Paul George”,s:“GTD”,dc:“dotq”,note:“knee”}],
 pr:[{yr:“22”,l:“2nd Rd”,h:40},{yr:“23”,l:“2nd Rd”,h:40},{yr:“24”,l:“1st Rd”,h:15},{yr:“25”,l:“1st Rd”,h:15}],
@@ -750,35 +753,33 @@ pn:“Paolo is a budding star. Defense is elite. Franz Wagner health is critical
 ]
 };
 
-// Bracket with full series breakdowns, matchup analysis, and odds
 var BRACKET={
 W:[
 {s1:1,t1:“OKC”,t1full:“Oklahoma City Thunder”,s2:8,t2:“POR”,t2full:“Portland Trail Blazers”,
 p1:82,p2:18,odds1:”-450”,odds2:”+340”,
-keys:[“SGA averaging 32 ppg - no one on Portland can guard him”,“OKC defense ranks 2nd in the league”,“Scoot Henderson showed flashes but this is too big a leap”,
-“Chet Holmgren health is the only real variable”],
+keys:[“SGA averaging 32 ppg - no one on Portland can guard him”,“OKC defense ranks 2nd in the league”,“Scoot Henderson showed flashes but this is too big a leap”,“Chet Holmgren health is the only real variable”],
 edge:“OKC by a mile. Best player on the floor by a wide margin.”,proj:“OKC wins 4-1”},
 {s1:2,t1:“SAS”,t1full:“San Antonio Spurs”,s2:7,t2:“LAC”,t2full:“LA Clippers”,
 p1:71,p2:29,odds1:”-260”,odds2:”+210”,
-keys:[“Wembanyama’s rim protection neutralizes Harden’s floater game”,“Kawhi is out - Clippers lose their best player before tip-off”,“Castle and Wemby give Spurs two unguardable options”,“Pop’s playoff experience vs a Clippers team with no real identity”],
+keys:[“Wembanyama rim protection neutralizes Harden floater game”,“Kawhi is out - Clippers lose their best player before tip-off”,“Castle and Wemby give Spurs two unguardable options”,“Pop playoff experience vs a Clippers team with no real identity”],
 edge:“Spurs win this convincingly if Wemby stays healthy.”,proj:“SAS wins 4-2”},
 {s1:3,t1:“DEN”,t1full:“Denver Nuggets”,s2:6,t2:“HOU”,t2full:“Houston Rockets”,
 p1:62,p2:38,odds1:”-185”,odds2:”+155”,
-keys:[“Jokic vs Sengun - best big man matchup of the first round”,“Murray health is everything for Denver”,“KD gives Houston a closer they’ve never had before”,“Houston’s youth could be exposed in a 7-game grind”],
+keys:[“Jokic vs Sengun - best big man matchup of the first round”,“Murray health is everything for Denver”,“KD gives Houston a closer they have never had before”,“Houston youth could be exposed in a 7-game grind”],
 edge:“Jokic is the equalizer. Denver survives in 6 if Murray is healthy.”,proj:“DEN wins 4-2”},
 {s1:4,t1:“LAL”,t1full:“Los Angeles Lakers”,s2:5,t2:“MIN”,t2full:“Minnesota Timberwolves”,
 p1:55,p2:45,odds1:”-130”,odds2:”+110”,
-keys:[“LeBron and Luka vs Edwards - marquee first round matchup”,“Minnesota’s defense is elite and will test Luka’s shot creation”,“AD out of the lineup (traded) means Lakers thinner in the frontcourt”,“Edwards has never faced a defense built around stopping him and a star”],
+keys:[“LeBron and Luka vs Edwards - marquee first round matchup”,“Minnesota defense is elite and will test Luka shot creation”,“Lakers thinner in frontcourt after AD was traded”,“Edwards has never faced a defense built around stopping him and a star”],
 edge:“Too close to call. Best series of the first round.”,proj:“LAL wins 4-3”}
 ],
 E:[
 {s1:1,t1:“DET”,t1full:“Detroit Pistons”,s2:8,t2:“ORL”,t2full:“Orlando Magic”,
 p1:65,p2:35,odds1:”-210”,odds2:”+175”,
-keys:[“Cade Cunningham vs Paolo Banchero - young star showdown”,“Detroit has never been here before - pressure is real”,“Orlando’s defense is legitimately elite and will be physical”,“Pistons are 20 games better than their projection - can they sustain it?”],
+keys:[“Cade Cunningham vs Paolo Banchero - young star showdown”,“Detroit has never been here before - pressure is real”,“Orlando defense is legitimately elite and will be physical”,“Pistons are 20 games better than their projection - can they sustain it?”],
 edge:“Detroit has the better player but Orlando has the better system.”,proj:“DET wins 4-3”},
 {s1:2,t1:“CLE”,t1full:“Cleveland Cavaliers”,s2:7,t2:“ATL”,t2full:“Atlanta Hawks”,
 p1:70,p2:30,odds1:”-270”,odds2:”+220”,
-keys:[“Mitchell is a proven playoff performer - Trae historically is not”,“Mobley’s two-way dominance gives Cleveland a clear structural edge”,“Trae Young’s shot creation keeps Atlanta alive in any series”,“Cleveland’s depth is far superior across all five positions”],
+keys:[“Mitchell is a proven playoff performer - Trae historically is not”,“Mobley two-way dominance gives Cleveland a clear structural edge”,“Trae Young shot creation keeps Atlanta alive in any series”,“Cleveland depth is far superior across all five positions”],
 edge:“Cleveland is the pick. Mitchell over Trae in the clutch every time.”,proj:“CLE wins 4-1”},
 {s1:3,t1:“BOS”,t1full:“Boston Celtics”,s2:6,t2:“PHI”,t2full:“Philadelphia 76ers”,
 p1:78,p2:22,odds1:”-380”,odds2:”+300”,
@@ -786,12 +787,11 @@ keys:[“Embiid out means Philly has no answer for Tatum and Brown”,“Boston 
 edge:“Boston in a sweep or 5. Philly is simply outgunned without Embiid.”,proj:“BOS wins 4-1”},
 {s1:4,t1:“NYK”,t1full:“New York Knicks”,s2:5,t2:“TOR”,t2full:“Toronto Raptors”,
 p1:69,p2:31,odds1:”-240”,odds2:”+195”,
-keys:[“Brunson in the playoffs at MSG is appointment television”,“KAT gives New York a size advantage Toronto cannot match”,“Scottie Barnes is the best player on the court but Toronto lacks depth”,“New York’s playoff experience from two ECF runs is a real edge”],
+keys:[“Brunson in the playoffs at MSG is appointment television”,“KAT gives New York a size advantage Toronto cannot match”,“Scottie Barnes is the best player on the court but Toronto lacks depth”,“New York playoff experience from two ECF runs is a real edge”],
 edge:“Knicks win this. Brunson is a different player in May.”,proj:“NYK wins 4-2”}
 ]
 };
 
-// Championship odds (approximate)
 var CHAMP_ODDS={
 OKC:{odds:”+200”,prob:33},BOS:{odds:”+280”,prob:26},NYK:{odds:”+450”,prob:18},
 DEN:{odds:”+500”,prob:17},LAL:{odds:”+650”,prob:13},DET:{odds:”+700”,prob:13},
@@ -850,7 +850,6 @@ var m=(cl||””).match(/(\d+):(\d+)/);
 var sl=m?parseInt(m[1])*60+parseInt(m[2]):720;
 return Math.min(((q-1)*12+(720-sl)/60)/48,1);
 }
-
 function calcStakes(ha,aa){
 var h=STANDINGS[A2N[ha]];
 var a=STANDINGS[A2N[aa]];
@@ -869,7 +868,6 @@ if([hr,ar].some(function(r){return r>=8&&r<=10;})){score+=15;reasons.push(“Pla
 score=Math.min(100,Math.round(score*1.3));
 return{score:score,label:score>=70?“High stakes”:score>=45?“Playoff implications”:“Low stakes”,reason:reasons.join(” - “)||“Low stakes”};
 }
-
 function calcPregame(ha,aa,wp){
 var hs=STARS[ha]||{players:[],ppg:[],rating:65};
 var as2=STARS[aa]||{players:[],ppg:[],rating:65};
@@ -885,7 +883,6 @@ if(wp){var hP=wp[ha]||50;tScore=Math.round(Math.max(10,100-Math.abs(hP-50)*2));}
 var tot=Math.round(starScore*0.30+sk.score*0.28+muScore*0.22+tScore*0.20);
 return{tot:Math.min(99,Math.max(1,tot)),sk:sk,starScore:starScore,muScore:Math.round(muScore),tScore:tScore,hs:hs,as2:as2};
 }
-
 function calcWatch(g){
 if(g.status===“scheduled”){return null;}
 var gp=elapsedPct(g.quarter||1,g.clock);
@@ -925,7 +922,6 @@ clutch:{v:Math.round(cu),w:“10%”,l:“Clutch factor”}
 }
 };
 }
-
 function standStrip(ha,aa,hn,an){
 return [{abbr:aa,name:an},{abbr:ha,name:hn}].map(function(t){
 var s=STANDINGS[t.name]||STANDINGS[A2N[t.abbr]];
@@ -934,14 +930,12 @@ var si=seedLabel(s.confRank);
 return ‘<div class="scard"><span class="sname">’+t.abbr+’ <small>’+(s.conf===“E”?“East”:“West”)+’</small></span><span class="srec">’+s.wins+’-’+s.losses+’</span><span class="sseed '+si.c+'">’+si.l+’</span></div>’;
 }).join(””);
 }
-
 function factorBars(factors){
 return Object.keys(factors).map(function(k){
 var f=factors[k];
 return ‘<div class="factor"><div class="factor-top"><span class="fname">’+f.l+’</span><span class="fwt">’+f.w+’</span></div><div class="fbar-bg"><div class="fbar" style="width:'+f.v+'%;background:'+scoreColor(f.v)+'"></div></div><span class="fval">’+f.v+’<small>/100</small></span></div>’;
 }).join(””);
 }
-
 async function doFetch(){
 if(isFetching){return;}
 isFetching=true;
@@ -968,12 +962,10 @@ isFetching=false;
 document.getElementById(“rbtn”).disabled=false;
 }
 }
-
 async function fetchAndRender(){
 await doFetch();
 if(pageTab===“games”){renderGames();}
 }
-
 async function fetchBox(gameId){
 try{
 var res=await fetch(”/api/boxscore?gameId=”+gameId);
@@ -987,7 +979,6 @@ renderGames();
 setTimeout(function(){drawChart(“ch-”+gameId,g);},80);
 }catch(err){console.error(“boxscore:”,err);}
 }
-
 function updateTs(){
 if(!lastFetched){return;}
 var s=Math.round((Date.now()-lastFetched)/1000);
@@ -1000,7 +991,6 @@ e.textContent=msg;
 e.style.display=“block”;
 }
 function hideBanner(){document.getElementById(“banner”).style.display=“none”;}
-
 function renderGames(){
 var list;
 if(gameTab===“live”){list=liveGames.filter(function(g){return g.status===“inprogress”;});}
@@ -1026,10 +1016,8 @@ return calcPregame(b.home.abbr,b.away.abbr,null).tot-calcPregame(a.home.abbr,a.a
 }
 document.getElementById(“gc”).innerHTML=list.map(renderCard).join(””);
 }
-
 function renderCard(g){
 var isExp=(expandedGame===g.id);
-
 if(g.status===“scheduled”){
 var pw=calcPregame(g.home.abbr,g.away.abbr,g.winProb||null);
 var skBadge=pw.sk.score>=45?’<span class=“tag tag-’+(pw.sk.score>=70?“crimson”:“plum”)+’”>’+pw.sk.label+’</span>’:””;
@@ -1078,7 +1066,6 @@ skBadge+
 wBlock+
 ‘</div>’+xBody+’</div>’;
 }
-
 var ws=calcWatch(g);
 var sk=calcStakes(g.home.abbr,g.away.abbr);
 var skB=sk.score>=45?’<span class=“tag tag-’+(sk.score>=70?“crimson”:“plum”)+’”>’+sk.label+’</span>’:””;
@@ -1147,7 +1134,6 @@ skB+bcB+
 wBlock+
 ‘</div>’+xBody+’</div>’;
 }
-
 function toggleGame(id){
 expandedGame=(expandedGame===id)?null:id;
 renderGames();
@@ -1159,7 +1145,6 @@ fetchBox(id);
 }
 }
 }
-
 function drawChart(cid,g){
 var ex=charts[cid];
 if(ex){ex.destroy();delete charts[cid];}
@@ -1189,7 +1174,6 @@ y:{min:0,max:100,grid:{color:“rgba(0,0,0,0.05)”},ticks:{font:{size:10},color
 }
 });
 }
-
 function renderTeams(){
 var list=TEAMS[confTab];
 document.getElementById(“tc”).innerHTML=list.map(function(t){
@@ -1242,27 +1226,19 @@ return ‘<div class=“card’+(isExp?” open”:””)+’" onclick="toggleT
 ‘</div>’+xH+’</div>’;
 }).join(””);
 }
-
 function toggleTeam(a){expandedTeam=(expandedTeam===a)?null:a;renderTeams();}
-
 function renderBracket(){
 var confNames={W:“Western Conference”,E:“Eastern Conference”};
-
-// Championship odds section
 var champHtml=’<div class="section-hed">Championship odds</div><div class="champ-grid">’;
 Object.keys(CHAMP_ODDS).forEach(function(t){
 var co=CHAMP_ODDS[t];
 champHtml+=’<div class="champ-card"><span class="champ-team">’+t+’</span><span class="champ-odds">’+co.odds+’</span><div class="champ-bar-bg"><div class="champ-bar" style="width:'+co.prob+'%;background:#9E2B25"></div></div></div>’;
 });
 champHtml+=’</div>’;
-
-// Playoff MVP contenders
 var mvpHtml=’<div class="section-hed">Playoff MVP favorites</div>’;
 mvpHtml+=MVP_CONTENDERS.map(function(m){
 return ‘<div class="mvp-row"><div class="mvp-left"><span class="mvp-name">’+m.name+’</span><span class="mvp-team">’+m.team+’</span></div><div class="mvp-right"><span class="mvp-odds">’+m.odds+’</span><span class="mvp-note">’+m.note+’</span></div></div>’;
 }).join(””);
-
-// Series breakdowns
 var seriesHtml=Object.keys(BRACKET).map(function(conf){
 var series=BRACKET[conf];
 return ‘<div class="section-hed">’+confNames[conf]+’ - First Round</div>’+
@@ -1307,15 +1283,12 @@ return ‘<div class=“series-card’+(isExp?” open”:””)+’" onclick="
 xH+’</div>’;
 }).join(””);
 }).join(””);
-
 document.getElementById(“brc”).innerHTML=champHtml+mvpHtml+seriesHtml;
 }
-
 function toggleSeries(id){
 expandedSeries=(expandedSeries===id)?null:id;
 renderBracket();
 }
-
 function showPage(p,el){
 pageTab=p;
 document.querySelectorAll(”.ntab”).forEach(function(t){t.classList.remove(“on”);});
@@ -1326,25 +1299,21 @@ document.getElementById(“pg-bracket”).style.display=p===“bracket”?“blo
 if(p===“teams”){renderTeams();}
 if(p===“bracket”){renderBracket();}
 }
-
 function showGameTab(t,el){
 gameTab=t;expandedGame=null;
 document.querySelectorAll(”#pg-games .stab”).forEach(function(x){x.classList.remove(“on”);});
 el.classList.add(“on”);renderGames();
 }
-
 function showConfTab(c,el){
 confTab=c;expandedTeam=null;
 document.querySelectorAll(”#pg-teams .stab”).forEach(function(x){x.classList.remove(“on”);});
 el.classList.add(“on”);renderTeams();
 }
-
 var cd=30;
 setInterval(function(){
 updateTs();cd–;
 if(cd<=0){cd=30;fetchAndRender();}
 },1000);
-
 fetchAndRender();
 
 </script>
