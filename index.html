@@ -214,7 +214,7 @@ body{font-family:"Georgia",serif;background:var(--cream);color:var(--ink);min-he
       <button class="stab" id="tupcoming" onclick="showGameTab('upcoming',this)">Upcoming</button>
       <button class="stab" id="tfinal" onclick="showGameTab('final',this)">Final</button>
     </div>
-    <div id="banner" class="banner loading">Fetching live scores...</div>
+    <div id="banner" class="banner" style="display:none"></div>
     <div id="gc"></div>
   </div>
   <div id="pg-teams" style="display:none">
@@ -605,6 +605,14 @@ document.getElementById(“tupcoming”).textContent=“Upcoming (”+up+”)”
 document.getElementById(“tfinal”).textContent=“Final (”+fn+”)”;
 hideBanner();
 updateTs();
+if(gameTab===“live”&&lv===0){
+var best=up>0?“upcoming”:fn>0?“final”:“live”;
+if(best!==“live”){
+gameTab=best;
+document.querySelectorAll(”#pg-games .stab”).forEach(function(x){x.classList.remove(“on”);});
+document.getElementById(best===“upcoming”?“tupcoming”:“tfinal”).classList.add(“on”);
+}
+}
 }catch(err){
 showBanner(“error”,“Could not load scores: “+err.message);
 }finally{
