@@ -961,7 +961,7 @@ el.classList.add(“on”);renderTeams();
 }
 var cd=30;
 setInterval(function(){
-updateTs();cd–;
+updateTs();cd=cd-1;
 if(cd<=0){cd=30;fetchAndRender();}
 },1000);
 fetchAndRender();
