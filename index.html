@@ -456,7 +456,8 @@ var MVP_CONTENDERS=[
 
 
 // Live data - populated by API calls
-var liveStandings={};  // abbr -> {conf,confRank,wins,losses,offRtg,defRtg,netRtg,name}
+var liveStandings={};
+var liveOdds={gameOdds:{},champOdds:[]};  // abbr -> {conf,confRank,wins,losses,offRtg,defRtg,netRtg,name}
 var liveStars={};      // abbr -> [{name,ppg},...]
 var liveAvgs={};       // playerName -> ppg
 var standingsLoaded=false;
@@ -598,6 +599,17 @@ function calcPregame(ha,aa,wp){
   var muScore=Math.min(100,Math.max(0,50+((hN+aN)/2)*4));
   var tScore=50;
   if(wp){var hP=wp[ha]||50;tScore=Math.round(Math.max(10,100-Math.abs(hP-50)*2));}
+  // Override with live bookmaker implied probability if available
+  if(!tScore||tScore===50){
+    var gameKey=Object.keys(liveOdds.gameOdds).find(function(k){
+      return k.toLowerCase().includes(ha.toLowerCase())||k.toLowerCase().includes(aa.toLowerCase());
+    });
+    if(gameKey){
+      var go=liveOdds.gameOdds[gameKey];
+      var hProb=go.homeProb||50;
+      tScore=Math.round(Math.max(10,100-Math.abs(hProb-50)*2));
+    }
+  }
   var tot=Math.round(starScore*0.30+sk.score*0.28+muScore*0.22+tScore*0.20);
   return{tot:Math.min(99,Math.max(1,tot)),sk:sk,starScore:starScore,muScore:Math.round(muScore),tScore:tScore,hs:hs,as2:as2};
 }
@@ -684,8 +696,19 @@ async function fetchAndRender(){
   await doFetch();
   if(pageTab==="games"){renderGames();}
 }
+
+async function fetchOdds(){
+  try{
+    var res=await fetch("/api/odds");
+    if(!res.ok){throw new Error("HTTP "+res.status);}
+    var data=await res.json();
+    if(!data.success){throw new Error(data.error||"odds error");}
+    liveOdds.gameOdds=data.gameOdds||{};
+    liveOdds.champOdds=data.champOdds||[];
+  }catch(err){console.error("odds fetch:",err.message);}
+}
 async function initData(){
-  await Promise.all([fetchStandings(),fetchPlayers()]);
+  await Promise.all([fetchStandings(),fetchPlayers(),fetchOdds()]);
   // Re-render current page with live data
   if(pageTab==="teams"){renderTeams();}
   if(pageTab==="games"){renderGames();}
@@ -762,7 +785,18 @@ function renderCard(g){
         return '<div class="star-row"><span class="star-tm">'+p.t+'</span><span class="star-nm">'+p.n+'</span><span class="star-av">'+p.g+' ppg</span></div>';
       }).join("");
       var wpH="";
-      if(g.winProb){
+      // Try live odds first
+      var liveGameKey=Object.keys(liveOdds.gameOdds).find(function(k){
+        var parts=k.split('|');
+        return (parts[0]&&parts[0].includes(g.home.name))||(parts[1]&&parts[1].includes(g.away.name));
+      });
+      var lo=liveGameKey?liveOdds.gameOdds[liveGameKey]:null;
+      if(lo&&lo.homeProb){
+        var hP=lo.homeProb,aP=lo.awayProb||(100-hP);
+        wpH='<div class="expand-label">Live betting odds</div>'+
+            '<div class="wp-row"><span class="wp-tm">'+g.home.abbr+'</span><div class="wp-bg"><div class="wp-fill" style="width:'+hP+'%;background:#9E2B25"></div></div><span class="wp-pct">'+(lo.home||hP+'%')+'</span></div>'+
+            '<div class="wp-row"><span class="wp-tm">'+g.away.abbr+'</span><div class="wp-bg"><div class="wp-fill" style="width:'+aP+'%;background:#51355A"></div></div><span class="wp-pct">'+(lo.away||aP+'%')+'</span></div>';
+      } else if(g.winProb){
         var hP=g.winProb[g.home.abbr]||50;
         var aP=g.winProb[g.away.abbr]||(100-hP);
         wpH='<div class="expand-label">Vegas line</div>'+
@@ -955,10 +989,13 @@ var nr=liveT.netRtg!==undefined?liveT.netRtg.toFixed(1):(t.offR-t.defR).toFixed(
 function toggleTeam(a){expandedTeam=(expandedTeam===a)?null:a;renderTeams();}
 function renderBracket(){
   var confNames={W:"Western Conference",E:"Eastern Conference"};
-  var champHtml='<div class="section-hed">Championship odds</div><div class="champ-grid">';
-  Object.keys(CHAMP_ODDS).forEach(function(t){
-    var co=CHAMP_ODDS[t];
-    champHtml+='<div class="champ-card"><span class="champ-team">'+t+'</span><span class="champ-odds">'+co.odds+'</span><div class="champ-bar-bg"><div class="champ-bar" style="width:'+co.prob+'%;background:#9E2B25"></div></div></div>';
+  // Use live odds if available, fall back to hardcoded
+  var champData=liveOdds.champOdds.length>0
+    ?liveOdds.champOdds.map(function(c){return {name:c.team,odds:c.odds,prob:c.prob};})
+    :Object.keys(CHAMP_ODDS).map(function(t){return {name:t,odds:CHAMP_ODDS[t].odds,prob:CHAMP_ODDS[t].prob};});
+  var champHtml='<div class="section-hed">Championship odds <span style="font-size:10px;font-weight:400;color:var(--ink3);letter-spacing:0;text-transform:none;">'+(liveOdds.champOdds.length>0?'via DraftKings / FanDuel / BetMGM':'hardcoded fallback')+'</span></div><div class="champ-grid">';
+  champData.forEach(function(c){
+    champHtml+='<div class="champ-card"><span class="champ-team">'+c.name+'</span><span class="champ-odds">'+c.odds+'</span><div class="champ-bar-bg"><div class="champ-bar" style="width:'+c.prob+'%;background:#9E2B25"></div></div></div>';
   });
   champHtml+='</div>';
   var mvpHtml='<div class="section-hed">Playoff MVP favorites</div>';
