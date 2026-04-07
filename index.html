@@ -152,6 +152,19 @@ body{font-family:"Georgia",serif;background:var(--cream);color:var(--ink);min-he
 .inj-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .doto{background:#dc2626;}.dotq{background:#f59e0b;}.dotk{background:#16a34a;}
 .inj-n{font-weight:600;}.inj-z{color:var(--ink3);}
+
+.pulse-wrap{margin-top:4px;}
+.pulse-bar-bg{height:6px;background:var(--rule);border-radius:99px;overflow:hidden;margin:8px 0 6px;}
+.pulse-bar{height:6px;border-radius:99px;transition:width .4s ease;}
+.pulse-score{font-size:28px;font-weight:700;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1;letter-spacing:-1px;}
+.pulse-label{font-size:12px;font-weight:600;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin-left:8px;}
+.pulse-meta{font-size:11px;color:var(--ink3);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin-top:4px;}
+.pulse-themes{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;}
+.pulse-theme{font-size:10px;font-weight:600;padding:2px 8px;border-radius:99px;letter-spacing:0.04em;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;}
+.pulse-pos{background:#dcfce7;color:#166534;}
+.pulse-neg{background:#fee2e2;color:#991b1b;}
+.pulse-loading{font-size:12px;color:var(--ink3);font-style:italic;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;padding:8px 0;}
+
 .section-hed{font-size:11px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink3);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;margin:24px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--rule);}
 .section-hed:first-child{margin-top:0;}
 .champ-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px;}
@@ -330,6 +343,16 @@ var AVGS={
 // Playoff histories verified from ESPN/Wikipedia
 // yr = final year of season (e.g. "24" = 2023-24)
 // h: 0=lottery, 8=play-in, 15=1st rd, 40=2nd rd, 75=conf finals, 95=finals, 100=champs
+var SUBREDDITS={
+  ATL:'atlantahawks',BKN:'gonets',BOS:'bostonceltics',CHA:'charlottehornets',
+  CHI:'chicagobulls',CLE:'clevelandcavs',DAL:'mavericks',DEN:'denvernuggets',
+  DET:'detroitpistons',GSW:'warriors',HOU:'rockets',IND:'pacers',
+  LAC:'laclippers',LAL:'lakers',MEM:'memphisgrizzlies',MIA:'heat',
+  MIL:'mkebucks',MIN:'timberwolves',NOP:'nolapelicans',NYK:'nyknicks',
+  OKC:'thunder',ORL:'orlandomagic',PHI:'sixers',PHX:'suns',
+  POR:'ripcity',SAC:'kings',SAS:'nba_spurs',TOR:'torontoraptors',
+  UTA:'utahjazz',WAS:'washingtonwizards'
+};
 var TEAMS={
   W:[
     {name:"Oklahoma City Thunder",abbr:"OKC",wins:62,losses:16,confRank:1,preW:52,projR:2,offR:117.6,defR:106.0,ps:91,ptag:"Exceeding expectations",
@@ -707,6 +730,48 @@ async function fetchOdds(){
     liveOdds.champOdds=data.champOdds||[];
   }catch(err){console.error("odds fetch:",err.message);}
 }
+
+var sentimentCache={};
+
+async function fetchSentiment(abbr, containerId){
+  if(sentimentCache[abbr]){
+    renderPulse(containerId, sentimentCache[abbr]);
+    return;
+  }
+  try{
+    var res=await fetch("/api/sentiment?team="+abbr);
+    if(!res.ok){throw new Error("HTTP "+res.status);}
+    var data=await res.json();
+    if(!data.success){throw new Error(data.error||"sentiment error");}
+    sentimentCache[abbr]=data.sentiment;
+    renderPulse(containerId, data.sentiment);
+  }catch(err){
+    var el=document.getElementById(containerId);
+    if(el){el.innerHTML='<div class="pulse-loading">Fan pulse unavailable</div>';}
+    console.error("sentiment:",err.message);
+  }
+}
+
+function renderPulse(containerId, s){
+  var el=document.getElementById(containerId);
+  if(!el){return;}
+  var color=s.score>=80?"#16a34a":s.score>=65?"#9E2B25":s.score>=50?"#51355A":s.score>=35?"#b45309":"#dc2626";
+  var labelColor=color;
+  var themesHtml=(s.themes||[]).map(function(t){
+    return '<span class="pulse-theme '+(t.positive?"pulse-pos":"pulse-neg")+'">'+t.word+'</span>';
+  }).join("");
+  el.innerHTML=
+    '<div style="display:flex;align-items:baseline;gap:0;">'+
+      '<span class="pulse-score" style="color:'+color+'">'+s.score+'</span>'+
+      '<span class="pulse-label" style="color:'+labelColor+'">'+s.label+'</span>'+
+    '</div>'+
+    '<div class="pulse-bar-bg"><div class="pulse-bar" style="width:'+s.score+'%;background:'+color+'"></div></div>'+
+    (themesHtml?'<div class="pulse-themes">'+themesHtml+'</div>':'')+
+    '<div class="pulse-meta">Based on '+s.postCount+' top posts this week on '+
+      '<a href="https://reddit.com/r/'+(s.subreddit||'nba')+'" target="_blank" style="color:var(--ink3);">'+(s.subreddit||'r/nba')+'</a>'+
+    '</div>';
+}
+
 async function initData(){
   await Promise.all([fetchStandings(),fetchPlayers(),fetchOdds()]);
   // Re-render current page with live data
@@ -970,6 +1035,8 @@ var nr=liveT.netRtg!==undefined?liveT.netRtg.toFixed(1):(t.offR-t.defR).toFixed(
         '<div class="expand-label">Playoff history</div><div class="hyrs">'+hiH+'</div>'+
         '<div class="pnote">'+t.pn+'</div>'+
         '<div class="expand-label">Injury report</div><div class="inj-list">'+ijH+'</div>'+
+        '<div class="expand-label">Fan pulse <span style="font-size:10px;font-weight:400;color:var(--ink3);letter-spacing:0;text-transform:none;">via r/'+SUBREDDITS[t.abbr]+'</span></div>'+
+        '<div class="pulse-wrap" id="pulse-'+t.abbr+'"><div class="pulse-loading">Loading fan sentiment...</div></div>'+
         '</div>';
     }
     return '<div class="card'+(isExp?" open":"")+'\" onclick=\"toggleTeam(\''+t.abbr+'\')">'+
@@ -986,7 +1053,13 @@ var nr=liveT.netRtg!==undefined?liveT.netRtg.toFixed(1):(t.offR-t.defR).toFixed(
       '</div>'+xH+'</div>';
   }).join("");
 }
-function toggleTeam(a){expandedTeam=(expandedTeam===a)?null:a;renderTeams();}
+function toggleTeam(a){
+  expandedTeam=(expandedTeam===a)?null:a;
+  renderTeams();
+  if(expandedTeam){
+    setTimeout(function(){fetchSentiment(expandedTeam,"pulse-"+expandedTeam);},50);
+  }
+}
 function renderBracket(){
   var confNames={W:"Western Conference",E:"Eastern Conference"};
   // Use live odds if available, fall back to hardcoded
